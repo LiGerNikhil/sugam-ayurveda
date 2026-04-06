@@ -1,0 +1,286 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block title %}Orders Management{% endblock %}
+
+{% block page_title %}Orders Management{% endblock %}
+{% block page_description %}Manage customer orders and fulfillment{% endblock %}
+
+{% block content %}
+<!-- Status Filter -->
+<div class="card mb-6">
+    <div class="p-6">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-900">Orders</h2>
+                <p class="text-sm text-gray-600 mt-1">Manage all customer orders</p>
+            </div>
+        </div>
+        
+        <form method="get" class="flex items-center space-x-4">
+            <div>
+                <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    <option value="">All Status</option>
+                    <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="confirmed" {% if status_filter == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="processing" {% if status_filter == 'processing' %}selected{% endif %}>Processing</option>
+                    <option value="shipped" {% if status_filter == 'shipped' %}selected{% endif %}>Shipped</option>
+                    <option value="delivered" {% if status_filter == 'delivered' %}selected{% endif %}>Delivered</option>
+                    <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                    <option value="paid" {% if status_filter == 'paid' %}selected{% endif %}>Paid</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-filter mr-2"></i>Filter
+            </button>
+            {% if status_filter %}
+            <a href="{% url 'admin_orders' %}" class="btn-secondary">
+                <i class="fas fa-times mr-2"></i>Clear
+            </a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<!-- Orders Table -->
+<div class="card">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Order ID
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Customer
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Total
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for order in orders %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">#{{ order.id }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ order.customer.user.get_full_name|default:order.customer.user.username }}</div>
+                        <div class="text-sm text-gray-500">{{ order.customer.user.email }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">₹{{ order.total_amount|floatformat:2 }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center space-x-3">
+                            <select id="status-select-{{ order.id }}" 
+                                    class="px-2 py-1 text-xs font-medium rounded-full border-0 focus:ring-2 focus:ring-green-500
+                                           {% if order.status == 'pending' %}bg-yellow-100 text-yellow-800{% endif %}
+                                           {% if order.status == 'confirmed' %}bg-blue-100 text-blue-800{% endif %}
+                                           {% if order.status == 'processing' %}bg-purple-100 text-purple-800{% endif %}
+                                           {% if order.status == 'shipped' %}bg-indigo-100 text-indigo-800{% endif %}
+                                           {% if order.status == 'delivered' %}bg-green-100 text-green-800{% endif %}
+                                           {% if order.status == 'cancelled' %}bg-red-100 text-red-800{% endif %}
+                                           {% if order.status == 'paid' %}bg-green-100 text-green-800{% endif %}">
+                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                                <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+                                <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>Shipped</option>
+                                <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                                <option value="paid" {% if order.status == 'paid' %}selected{% endif %}>Paid</option>
+                            </select>
+                            <button onclick="updateOrderStatus('{{ order.id }}')" 
+                                    id="update-btn-{{ order.id }}"
+                                    class="px-3 py-1 text-xs font-medium text-white bg-green-600 rounded-full hover:bg-green-700 transition-colors">
+                                Update
+                            </button>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ order.created_at|date:"M d, Y H:i" }}
+                    </td>
+                    </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-12 text-center">
+                        <div class="text-gray-500">
+                            <i class="fas fa-shopping-cart text-4xl mb-4"></i>
+                            <p class="text-lg font-medium">No orders found</p>
+                            <p class="text-sm mt-1">
+                                {% if status_filter %}
+                                    No orders with status "{{ status_filter }}" found.
+                                {% else %}
+                                    No orders have been placed yet.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    {% if orders.has_other_pages %}
+    <div class="px-6 py-4 border-t border-gray-200">
+        <div class="flex items-center justify-between">
+            <div class="text-sm text-gray-700">
+                Showing page {{ orders.number }} of {{ orders.paginator.num_pages }}
+            </div>
+            <div class="flex space-x-2">
+                {% if orders.has_previous %}
+                <a href="?page={{ orders.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" 
+                   class="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50">
+                    Previous
+                </a>
+                {% endif %}
+                
+                {% for num in orders.paginator.page_range %}
+                {% if orders.number == num %}
+                <span class="px-3 py-1 text-sm bg-green-600 text-white rounded-md">{{ num }}</span>
+                {% elif num > orders.number|add:'-3' and num < orders.number|add:'3' %}
+                <a href="?page={{ num }}{% if status_filter %}&status={{ status_filter }}{% endif %}" 
+                   class="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50">
+                    {{ num }}
+                </a>
+                {% endif %}
+                {% endfor %}
+                
+                {% if orders.has_next %}
+                <a href="?page={{ orders.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" 
+                   class="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50">
+                    Next
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateOrderStatus(orderId) {
+    const selectElement = document.getElementById(`status-select-${orderId}`);
+    const buttonElement = document.getElementById(`update-btn-${orderId}`);
+    const newStatus = selectElement.value;
+    
+    console.log('DEBUG: updateOrderStatus called', {orderId, newStatus});
+    
+    if (!newStatus) {
+        showMessage('Please select a status', 'error');
+        return;
+    }
+    
+    // Show loading state
+    buttonElement.disabled = true;
+    buttonElement.textContent = 'Updating...';
+    buttonElement.classList.add('bg-gray-400');
+    buttonElement.classList.remove('bg-green-600', 'hover:bg-green-700');
+    
+    // Create FormData
+    const formData = new FormData();
+    formData.append('status', newStatus);
+    
+    console.log('DEBUG: Sending request to', `/admin-dashboard/update-order-status/${orderId}/`);
+    
+    fetch(`/admin-dashboard/update-order-status/${orderId}/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => {
+        console.log('DEBUG: Response received', response);
+        return response.json();
+    })
+    .then(data => {
+        console.log('DEBUG: Response data', data);
+        if (data.success) {
+            showMessage(data.message, 'success');
+            // Update the select element's background color based on new status
+            updateSelectColor(selectElement, newStatus);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('DEBUG: Error:', error);
+        showMessage('An error occurred while updating order status', 'error');
+    })
+    .finally(() => {
+        // Reset button state
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Update';
+        buttonElement.classList.remove('bg-gray-400');
+        buttonElement.classList.add('bg-green-600', 'hover:bg-green-700');
+    });
+}
+
+function updateSelectColor(selectElement, status) {
+    // Remove all status color classes
+    selectElement.classList.remove('bg-yellow-100', 'text-yellow-800',
+                                   'bg-blue-100', 'text-blue-800',
+                                   'bg-purple-100', 'text-purple-800',
+                                   'bg-indigo-100', 'text-indigo-800',
+                                   'bg-green-100', 'text-green-800',
+                                   'bg-red-100', 'text-red-800');
+    
+    // Add appropriate color class based on status
+    const statusColors = {
+        'pending': ['bg-yellow-100', 'text-yellow-800'],
+        'confirmed': ['bg-blue-100', 'text-blue-800'],
+        'processing': ['bg-purple-100', 'text-purple-800'],
+        'shipped': ['bg-indigo-100', 'text-indigo-800'],
+        'delivered': ['bg-green-100', 'text-green-800'],
+        'paid': ['bg-green-100', 'text-green-800'],
+        'cancelled': ['bg-red-100', 'text-red-800']
+    };
+    
+    if (statusColors[status]) {
+        statusColors[status].forEach(colorClass => {
+            selectElement.classList.add(colorClass);
+        });
+    }
+}
+
+// Note: viewOrderDetails function removed as Actions column was deleted
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showMessage(message, type) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `fixed top-4 right-4 p-4 rounded-md text-white ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} z-50`;
+    messageDiv.textContent = message;
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+        messageDiv.remove();
+    }, 3000);
+}
+</script>
+{% endblock %}

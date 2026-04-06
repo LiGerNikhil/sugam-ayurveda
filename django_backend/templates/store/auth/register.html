@@ -1,0 +1,199 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Register - {{ site_info.name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-6">
+                <h2 class="text-3xl font-bold text-white text-center">Create Account</h2>
+                <p class="mt-2 text-green-100 text-center">Join Sugam Ayurveda today</p>
+            </div>
+            
+            <div class="p-6">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Two Column Layout -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+                        <!-- Left Column - User Information -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-medium text-gray-900 border-b pb-2">User Information</h3>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="{{ user_form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Username
+                                    </label>
+                                    {{ user_form.username }}
+                                    {% if user_form.username.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ user_form.username.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                                
+                                <div>
+                                    <label for="{{ user_form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Email <span class="text-red-500">*</span>
+                                    </label>
+                                    {{ user_form.email }}
+                                    {% if user_form.email.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ user_form.email.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="{{ user_form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        First Name
+                                    </label>
+                                    {{ user_form.first_name }}
+                                    {% if user_form.first_name.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ user_form.first_name.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <label for="{{ user_form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Last Name
+                                    </label>
+                                    {{ user_form.last_name }}
+                                    {% if user_form.last_name.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ user_form.last_name.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="{{ user_form.password.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Password
+                                    </label>
+                                    {{ user_form.password }}
+                                    {% if user_form.password.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ user_form.password.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                                
+                                <div>
+                                    <label for="{{ user_form.password_confirm.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Confirm Password
+                                    </label>
+                                    {{ user_form.password_confirm }}
+                                    {% if user_form.password_confirm.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ user_form.password_confirm.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column - Shipping Information -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Shipping Information</h3>
+                            
+                            <div>
+                                <label for="{{ customer_form.address.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Address
+                                </label>
+                                {{ customer_form.address }}
+                                {% if customer_form.address.errors %}
+                                    <p class="mt-1 text-sm text-red-600">{{ customer_form.address.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="{{ customer_form.city.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        City
+                                    </label>
+                                    {{ customer_form.city }}
+                                    {% if customer_form.city.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ customer_form.city.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <label for="{{ customer_form.state.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        State
+                                    </label>
+                                    {{ customer_form.state }}
+                                    {% if customer_form.state.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ customer_form.state.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="{{ customer_form.pincode.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        PIN Code
+                                    </label>
+                                    {{ customer_form.pincode }}
+                                    {% if customer_form.pincode.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ customer_form.pincode.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                                
+                                <div>
+                                    <label for="{{ customer_form.country.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Country
+                                    </label>
+                                    {{ customer_form.country }}
+                                    {% if customer_form.country.errors %}
+                                        <p class="mt-1 text-sm text-red-600">{{ customer_form.country.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Section -->
+                    <div class="border-t pt-6">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="text-sm text-gray-600 text-center sm:text-left">
+                                <p>By registering, you agree to receive a verification email to activate your account.</p>
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row items-center gap-3">
+                                <a href="{% url 'login' %}" class="text-sm text-green-600 hover:text-green-500 font-medium">
+                                    Already have an account? Sign in
+                                </a>
+                                <button type="submit" class="w-full sm:w-auto px-8 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                    Create Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add labels for form fields
+    const formFields = [
+        { id: 'id_username', label: 'Username' },
+        { id: 'id_email', label: 'Email Address' },
+        { id: 'id_first_name', label: 'First Name' },
+        { id: 'id_last_name', label: 'Last Name' },
+        { id: 'id_password', label: 'Password' },
+        { id: 'id_password_confirm', label: 'Confirm Password' },
+        { id: 'id_address', label: 'Address' },
+        { id: 'id_city', label: 'City' },
+        { id: 'id_state', label: 'State' },
+        { id: 'id_pincode', label: 'PIN Code' },
+        { id: 'id_country', label: 'Country' }
+    ];
+    
+    formFields.forEach(function(field) {
+        const input = document.getElementById(field.id);
+        if (input && !input.hasAttribute('placeholder')) {
+            input.setAttribute('placeholder', field.label);
+        }
+    });
+});
+</script>
+{% endblock %}

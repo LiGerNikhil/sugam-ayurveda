@@ -1,0 +1,250 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6 md:py-8">
+    <!-- Page Header -->
+    <div class="text-center mb-6 md:mb-8">
+        <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-2">All Products</h1>
+        <p class="text-gray-600 text-sm md:text-base">Discover our complete range of natural Ayurvedic products</p>
+    </div>
+    
+    <!-- Search and Filter Section -->
+    <div class="mb-6 md:mb-8 space-y-4">
+        <!-- Search Bar -->
+        <div class="relative max-w-2xl mx-auto">
+            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <form method="get" action="{% url 'products' %}" class="w-full">
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search products..."
+                    value="{{ search_query }}"
+                    class="w-full pl-10 pr-4 py-3 md:py-4 text-sm md:text-base border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
+                >
+            </form>
+        </div>
+        
+        <!-- Category Filters -->
+        <div class="flex flex-wrap justify-center gap-2 md:gap-3">
+            <a href="{% url 'products' %}" 
+               class="px-3 py-2 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-colors {% if not category_filter %}bg-green-600 text-white{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+                All
+            </a>
+            {% for category in categories %}
+                <a href="{% url 'products' %}?category={{ category.name }}" 
+                   class="px-3 py-2 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-colors {% if category_filter == category.name %}bg-green-600 text-white{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </div>
+        
+        <!-- Results Count -->
+        {% if search_query or category_filter %}
+            <div class="text-center text-gray-600 text-sm md:text-base">
+                {% if search_query %}
+                    Found {{ products|length }} products for "{{ search_query }}"
+                {% elif category_filter %}
+                    {{ products|length }} products in {{ category_filter }}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Main Content Area with Sidebar -->
+    <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+        <!-- Products Grid (Main Content) -->
+        <div class="flex-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                {% for product in products %}
+                    <div class="transform transition-all duration-300 hover:scale-105">
+                        {% include 'store/product_card.html' with product=product %}
+                    </div>
+                {% empty %}
+                    <div class="col-span-full text-center py-12 md:py-16">
+                        <div class="max-w-md mx-auto">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293H8m0 0l2.414 2.414A1 1 0 0011.172 14H13m0 0V8a1 1 0 011-1h4a1 1 0 011 1v6z"></path>
+                            </svg>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-2">No Products Found</h3>
+                            <p class="text-gray-500 mb-4">
+                                {% if search_query %}
+                                    No products found for "{{ search_query }}". Try different keywords or browse categories.
+                                {% elif category_filter %}
+                                    No products available in {{ category_filter }} category.
+                                {% else %}
+                                    No products available at the moment.
+                                {% endif %}
+                            </p>
+                            <a href="{% url 'products' %}" 
+                               class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                </svg>
+                                Browse All Products
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- WhatsApp Chat Sidebar (Right Side) -->
+        <div class="lg:w-80 xl:w-96">
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 sticky top-4">
+                <!-- WhatsApp Header -->
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.52.35 2.96.97 4.27l-.64 2.34 2.34-.64c1.31.62 2.75.97 4.27.97 5.46 0 9.91-4.45 9.91-9.91 0-1.52-.35-2.96-.97-4.27l.64-2.34-2.34.64c-1.31-.62-2.75-.97-4.27-.97-5.46 0-9.91 4.45-9.91 9.91 0 1.52.35 2.96.97 4.27l-.64 2.34 2.34-.64c1.31.62 2.75.97 4.27.97 5.46 0 9.91-4.45 9.91-9.91zm-7.23 15.14l-2.09-2.09-2.09 2.09c-1.07.53-2.14 1.06-3.21 1.59-.53.27-1.06.53-1.59.8l-2.34 2.34c.27.53.53 1.06.8 1.59.53 1.07.53 2.14 1.06 3.21 1.59l2.09-2.09c-.53-1.07-1.06-2.14-1.59-3.21z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">Need Help?</h3>
+                        <p class="text-sm text-gray-600">Chat with our experts</p>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp Form -->
+                <form id="whatsappForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                        <input type="text" 
+                               id="whatsappName" 
+                               required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                               placeholder="Enter your name">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone</label>
+                        <input type="tel" 
+                               id="whatsappPhone" 
+                               required
+                               pattern="[0-9]{10}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                               placeholder="10-digit mobile number">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                        <textarea id="whatsappMessage" 
+                                  rows="3"
+                                  required
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                                  placeholder="How can we help you?"></textarea>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.52.35 2.96.97 4.27l-.64 2.34 2.34-.64c1.31.62 2.75.97 4.27.97 5.46 0 9.91-4.45 9.91-9.91 0-1.52-.35-2.96-.97-4.27l.64-2.34-2.34.64c-1.31-.62-2.75-.97-4.27-.97-5.46 0-9.91 4.45-9.91 9.91 0 1.52.35 2.96.97 4.27l-.64 2.34 2.34-.64c1.31.62 2.75.97 4.27.97 5.46 0 9.91-4.45 9.91-9.91zm-7.23 15.14l-2.09-2.09-2.09 2.09c-1.07.53-2.14 1.06-3.21 1.59-.53.27-1.06.53-1.59.8l-2.34 2.34c.27.53.53 1.06.8 1.59.53 1.07.53 2.14 1.06 3.21 1.59l2.09-2.09c-.53-1.07-1.06-2.14-1.59-3.21z"/>
+                        </svg>
+                        Start WhatsApp Chat
+                    </button>
+                </form>
+                
+                <!-- Quick Help Links -->
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3">Quick Help</h4>
+                    <div class="space-y-2">
+                        <a href="tel:+916391251055" class="flex items-center text-sm text-gray-600 hover:text-green-600 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            Call: +91 63912 51055
+                        </a>
+                        <a href="mailto:info@sugamayurveda.com" class="flex items-center text-sm text-gray-600 hover:text-green-600 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Email Support
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Trust Badge -->
+                <div class="mt-6 p-4 bg-green-50 rounded-lg">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm text-green-800 font-medium">100% Secure & Private</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Filter Button (for future enhancement) -->
+    <div class="fixed bottom-4 right-4 z-40 lg:hidden">
+        <button onclick="toggleMobileFilters()" 
+                class="bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+function toggleMobileFilters() {
+    // Future enhancement for mobile filter drawer
+    console.log('Mobile filters toggled');
+}
+
+// WhatsApp Form Handler
+document.getElementById('whatsappForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('whatsappName').value;
+    const phone = document.getElementById('whatsappPhone').value;
+    const message = document.getElementById('whatsappMessage').value;
+    
+    // Validate phone number
+    if (!/^[0-9]{10}$/.test(phone)) {
+        alert('Please enter a valid 10-digit mobile number');
+        return;
+    }
+    
+    // Create WhatsApp message
+    const whatsappMessage = `Hello, I need help with Ayurvedic products.%0A%0AName: ${name}%0APhone: ${phone}%0AMessage: ${message}`;
+    
+    // WhatsApp URL with correct country code (+91 for India)
+    const whatsappUrl = `https://wa.me/916391251055?text=${encodeURIComponent(whatsappMessage)}`;
+    
+    // Open WhatsApp
+    window.open(whatsappUrl, '_blank');
+    
+    // Optional: Show success message
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Opening WhatsApp...';
+    submitBtn.disabled = true;
+    
+    setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+        this.reset();
+    }, 2000);
+});
+
+// Add smooth scroll behavior
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form[method="get"]');
+    if (form) {
+        form.addEventListener('submit', function() {
+            // Show loading state
+            const button = form.querySelector('button[type="submit"]');
+            if (button) {
+                button.disabled = true;
+                button.innerHTML = '<span class="inline-block animate-spin">⚙</span>';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

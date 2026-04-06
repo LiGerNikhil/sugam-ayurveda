@@ -1,0 +1,87 @@
+{% load placeholder_tags %}
+<div class="bg-white rounded-2xl overflow-hidden shadow-sm card-hover border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+    <a href="{% url 'product_detail' product.slug %}" class="block">
+        <div class="relative h-32 sm:h-48 md:h-52 lg:h-56 overflow-hidden">
+            {% if product.get_image_url %}
+                <img src="{{ product.get_image_url }}" alt="{{ product.name }}" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            {% else %}
+                <img src="{% placeholder_svg product.name 400 192 %}" alt="{{ product.name }}" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            {% endif %}
+            
+            <!-- Quick Action Badges -->
+            <div class="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {% if product.product_type == 'bundle' %}
+                    <span class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                        BUNDLE
+                    </span>
+                {% endif %}
+                {% if not product.available %}
+                    <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                        OUT OF STOCK
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    
+    <div class="p-2 sm:p-3 md:p-4 lg:p-5">
+        <!-- Category and Type Badges -->
+        <div class="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3">
+            <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                {{ product.category.name }}
+            </span>
+            {% if product.product_type == 'bundle' %}
+                <span class="text-xs font-bold text-white bg-green-600 px-2 py-1 rounded-full">
+                    BUNDLE
+                </span>
+            {% endif %}
+            {% if product.size %}
+                <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+                    {{ product.size }}
+                </span>
+            {% endif %}
+        </div>
+        
+        <!-- Product Name -->
+        <h3 class="font-semibold text-gray-800 mb-1 sm:mb-2 text-sm sm:text-base md:text-lg line-clamp-2 group-hover:text-green-600 transition-colors">
+            {{ product.name }}
+        </h3>
+        
+        <!-- Product Description -->
+        <p class="hidden sm:block text-xs sm:text-sm text-gray-500 mb-3 line-clamp-2 leading-relaxed">
+            {{ product.description }}
+        </p>
+        
+        <!-- Size Info -->
+        {% if product.size %}
+            <p class="text-xs text-gray-400 mb-3">{{ product.size }}</p>
+        {% endif %}
+        
+        <!-- Price -->
+        {% if product.price %}
+            <p class="text-base sm:text-lg md:text-xl font-bold text-green-600 mb-2 sm:mb-3">₹{{ product.price }}</p>
+        {% endif %}
+        
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3">
+            <a href="{% url 'product_detail' product.slug %}" 
+               class="w-full sm:flex-1 px-3 sm:px-4 py-2 bg-green-100 text-green-700 rounded-lg font-medium hover:bg-green-200 transition-all text-center text-sm sm:text-base">
+                <span class="block sm:hidden">View</span>
+                <span class="hidden sm:block">View Details</span>
+            </a>
+            
+            {% if user.is_authenticated and product.price and product.available %}
+                <form action="{% url 'add_to_cart' product.id %}" method="post" class="w-full sm:flex-1">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="w-full px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-all text-center text-sm sm:text-base">
+                        <span class="block sm:hidden">Add</span>
+                        <span class="hidden sm:inline">Add to Cart</span>
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>

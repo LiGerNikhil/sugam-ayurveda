@@ -1,0 +1,211 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+{% block page_description %}Overview of your store statistics and recent activity{% endblock %}
+
+{% block content %}
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-green-100 rounded-full">
+                <i class="fas fa-box text-green-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Total Products</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ total_products }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-blue-100 rounded-full">
+                <i class="fas fa-check-circle text-blue-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Available Products</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ available_products }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-purple-100 rounded-full">
+                <i class="fas fa-tags text-purple-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Categories</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ total_categories }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-orange-100 rounded-full">
+                <i class="fas fa-users text-orange-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Total Users</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ total_users }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Row of Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-indigo-100 rounded-full">
+                <i class="fas fa-user-check text-indigo-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Customers</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ total_customers }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-red-100 rounded-full">
+                <i class="fas fa-shopping-cart text-red-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Total Orders</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ total_orders }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-yellow-100 rounded-full">
+                <i class="fas fa-clock text-yellow-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Pending Orders</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ pending_orders }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card p-6">
+        <div class="flex items-center">
+            <div class="p-3 bg-teal-100 rounded-full">
+                <i class="fas fa-cog text-teal-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-sm font-medium text-gray-500">Site Settings</h3>
+                <p class="text-2xl font-bold text-gray-900">{{ total_site_info }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Recent Products -->
+    <div class="card">
+        <div class="p-6 border-b">
+            <h2 class="text-lg font-semibold text-gray-900">Recent Products</h2>
+            <p class="text-sm text-gray-600 mt-1">Latest added products</p>
+        </div>
+        <div class="p-6">
+            {% if recent_products %}
+                <div class="space-y-4">
+                    {% for product in recent_products %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-900">{{ product.name }}</h4>
+                            <p class="text-sm text-gray-600">{{ product.category.name }}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            {% if product.price %}
+                                <span class="text-sm font-semibold text-green-600">₹{{ product.price }}</span>
+                            {% endif %}
+                            <span class="status-badge {% if product.available %}status-available{% else %}status-unavailable{% endif %}">
+                                {% if product.available %}Available{% else %}Unavailable{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-500 text-center py-8">No products found</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Categories Overview -->
+    <div class="card">
+        <div class="p-6 border-b">
+            <h2 class="text-lg font-semibold text-gray-900">Categories Overview</h2>
+            <p class="text-sm text-gray-600 mt-1">Products per category</p>
+        </div>
+        <div class="p-6">
+            {% if categories_with_counts %}
+                <div class="space-y-4">
+                    {% for category in categories_with_counts %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-900">{{ category.name }}</h4>
+                            <p class="text-sm text-gray-600">{{ category.description|truncatechars:50 }}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                {{ category.product_count }} products
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-500 text-center py-8">No categories found</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mt-8">
+    <div class="card">
+        <div class="p-6 border-b">
+            <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>
+            <p class="text-sm text-gray-600 mt-1">Common administrative tasks</p>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="{% url 'admin_add_product' %}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition">
+                    <i class="fas fa-plus-circle text-green-600 text-xl mr-3"></i>
+                    <div>
+                        <h4 class="font-medium text-gray-900">Add Product</h4>
+                        <p class="text-sm text-gray-600">Create a new product</p>
+                    </div>
+                </a>
+                
+                <a href="{% url 'admin_add_category' %}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+                    <i class="fas fa-plus-circle text-blue-600 text-xl mr-3"></i>
+                    <div>
+                        <h4 class="font-medium text-gray-900">Add Category</h4>
+                        <p class="text-sm text-gray-600">Create a new category</p>
+                    </div>
+                </a>
+                
+                <a href="{% url 'admin_site_info' %}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition">
+                    <i class="fas fa-edit text-purple-600 text-xl mr-3"></i>
+                    <div>
+                        <h4 class="font-medium text-gray-900">Edit Site Info</h4>
+                        <p class="text-sm text-gray-600">Update site settings</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

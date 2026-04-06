@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %} - {{ site_info.name|default:"Sugam Ayurveda" }}</title>
+    {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .sidebar-link {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover {
+            background-color: #f1f5f9;
+            border-left: 4px solid #16a34a;
+            padding-left: 1rem;
+        }
+        
+        .sidebar-link.active {
+            background-color: #dcfce7;
+            border-left: 4px solid #16a34a;
+            color: #15803d;
+            font-weight: 600;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background: #475569;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-available {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+        
+        .status-unavailable {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg">
+            <div class="p-6 border-b">
+                <h1 class="text-2xl font-bold text-green-700">Admin Panel</h1>
+                <p class="text-sm text-gray-600 mt-1">{{ site_info.name|default:"Sugam Ayurveda" }}</p>
+            </div>
+            
+            <nav class="mt-6">
+                <div class="px-4">
+                    <a href="{% url 'admin_dashboard' %}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        Dashboard
+                    </a>
+                    <a href="{% url 'admin_products' %}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin_products' or request.resolver_match.url_name == 'admin_add_product' or request.resolver_match.url_name == 'admin_edit_product' %}active{% endif %}">
+                        <i class="fas fa-box mr-3"></i>
+                        Products
+                    </a>
+                    <a href="{% url 'admin_categories' %}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin_categories' or request.resolver_match.url_name == 'admin_add_category' or request.resolver_match.url_name == 'admin_edit_category' %}active{% endif %}">
+                        <i class="fas fa-tags mr-3"></i>
+                        Categories
+                    </a>
+                    <a href="{% url 'admin_users' %}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin_users' %}active{% endif %}">
+                        <i class="fas fa-users mr-3"></i>
+                        Users
+                    </a>
+                    <a href="{% url 'admin_orders' %}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin_orders' %}active{% endif %}">
+                        <i class="fas fa-shopping-cart mr-3"></i>
+                        Orders
+                    </a>
+                    <a href="{% url 'admin_site_info' %}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin_site_info' %}active{% endif %}">
+                        <i class="fas fa-cog mr-3"></i>
+                        Site Settings
+                    </a>
+                    <a href="{% url 'home' %}" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg">
+                        <i class="fas fa-home mr-3"></i>
+                        View Store
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="absolute bottom-0 w-64 p-4 border-t">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
+                        {{ user.username|first|upper }}
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-700">{{ user.username }}</p>
+                        <p class="text-xs text-gray-500">Administrator</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="{% url 'logout' %}" class="text-sm text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <!-- Top Header -->
+            <header class="bg-white shadow-sm border-b">
+                <div class="px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-2xl font-semibold text-gray-800">{% block page_title %}Dashboard{% endblock %}</h1>
+                            <p class="text-sm text-gray-600 mt-1">{% block page_description %}Welcome to the admin panel{% endblock %}</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="px-4 py-2 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-800{% elif message.tags == 'error' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Page Content -->
+            <main class="p-6">
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+    
+    <script>
+        // Auto-hide messages after 5 seconds
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.bg-green-100, .bg-red-100, .bg-blue-100');
+            messages.forEach(msg => msg.style.display = 'none');
+        }, 5000);
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

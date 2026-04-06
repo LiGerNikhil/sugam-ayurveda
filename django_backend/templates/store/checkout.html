@@ -1,0 +1,256 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Checkout - {{ site_info.name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Checkout</h1>
+            <p class="mt-2 text-gray-600">Review your order and confirm</p>
+        </div>
+        
+        <form method="post" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {% csrf_token %}
+            
+            <!-- Order Items -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Order Items</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            {% for item in cart_items %}
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img src="{{ item.image }}" alt="{{ item.name }}" class="w-16 h-16 object-cover rounded-lg">
+                                    <div class="ml-4">
+                                        <h4 class="text-sm font-medium text-gray-900">{{ item.name }}</h4>
+                                        <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-900">₹{{ item.price }} × {{ item.quantity }}</p>
+                                    <p class="text-sm font-semibold text-green-600">₹{{ item.subtotal }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shipping Information -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Shipping Information</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</p>
+                            <p class="text-gray-600">{{ user.email }}</p>
+                            {% if customer.phone %}<p class="text-gray-600">{{ customer.phone }}</p>{% endif %}
+                            {% if customer.address %}
+                                <p class="text-gray-600 mt-2">{{ customer.address }}</p>
+                                {% if customer.city %}
+                                    <p class="text-gray-600">{{ customer.city }}, {{ customer.state }} {{ customer.pincode }}</p>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500">
+                            <a href="{% url 'user_profile' %}" class="text-green-600 hover:text-green-800">Update address</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Order Notes -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Order Notes (Optional)</h2>
+                    </div>
+                    <div class="p-6">
+                        <textarea name="order_notes" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Special instructions for your order..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow sticky top-4">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">Order Summary</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Subtotal</span>
+                                <span class="font-medium">₹{{ total }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Shipping</span>
+                                <span class="font-medium">Free</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Tax</span>
+                                <span class="font-medium">Included</span>
+                            </div>
+                            <div class="border-t pt-4">
+                                <div class="flex justify-between">
+                                    <span class="text-lg font-semibold">Total</span>
+                                    <span class="text-lg font-semibold text-green-600">₹{{ total }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <!-- Payment Options -->
+                            <div class="mb-6">
+                                <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
+                                <div class="space-y-3">
+                                    <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="payment_method" value="razorpay" checked class="mr-3 text-green-600 focus:ring-green-500">
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                                </svg>
+                                                <span class="font-medium text-gray-900">Pay Now</span>
+                                            </div>
+                                            <p class="text-sm text-gray-500 mt-1">Secure payment via Razorpay</p>
+                                        </div>
+                                    </label>
+                                    
+                                    <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <input type="radio" name="payment_method" value="cod" class="mr-3 text-green-600 focus:ring-green-500">
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                                </svg>
+                                                <span class="font-medium text-gray-900">Cash on Delivery</span>
+                                            </div>
+                                            <p class="text-sm text-gray-500 mt-1">Pay when you receive your order</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Razorpay Button -->
+                            <div id="razorpay-section">
+                                <button type="button" id="pay-now-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                    Pay Now - ₹{{ total }}
+                                </button>
+                            </div>
+                            
+                            <!-- COD Button -->
+                            <div id="cod-section" class="hidden">
+                                <button type="submit" name="place_order" value="cod" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                    Place Order (Cash on Delivery)
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 hidden" id="fallback-submit">
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                Place Order
+                            </button>
+                            <p class="mt-2 text-xs text-gray-500 text-center">
+                                By placing this order, you agree to our terms and conditions
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Razorpay Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+    const razorpaySection = document.getElementById('razorpay-section');
+    const codSection = document.getElementById('cod-section');
+    const payNowBtn = document.getElementById('pay-now-btn');
+    
+    function togglePaymentMethod() {
+        const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
+        
+        if (selectedMethod === 'razorpay') {
+            razorpaySection.classList.remove('hidden');
+            codSection.classList.add('hidden');
+        } else {
+            razorpaySection.classList.add('hidden');
+            codSection.classList.remove('hidden');
+        }
+    }
+    
+    paymentRadios.forEach(radio => {
+        radio.addEventListener('change', togglePaymentMethod);
+    });
+    
+    payNowBtn.addEventListener('click', function() {
+        const orderTotal = parseFloat('{{ total|safe }}');
+        const userName = '{{ user.get_full_name|default:user.username|safe }}';
+        const userEmail = '{{ user.email|safe }}';
+        const userPhone = '{{ customer.phone|default:""|safe }}';
+        const userId = parseInt('{{ user.id|safe }}');
+        
+        // Create Razorpay order via API
+        fetch('/api/create-razorpay-order/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({
+                amount: orderTotal,
+                currency: 'INR',
+                receipt: 'order_' + Date.now(),
+                notes: {
+                    user_id: userId,
+                    email: userEmail
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Error creating payment order: ' + data.error);
+                return;
+            }
+            
+            const options = {
+                key: 'rzp_test_SZ7O4UsIzQBDVI',
+                amount: data.amount,
+                currency: data.currency,
+                name: 'Sugam Ayurveda',
+                description: 'Purchase of Ayurvedic products',
+                order_id: data.id,
+                handler: function(response) {
+                    // Payment successful
+                    window.location.href = '/payment-success/?payment_id=' + response.razorpay_payment_id + '&order_id=' + response.razorpay_order_id;
+                },
+                prefill: {
+                    name: userName,
+                    email: userEmail,
+                    contact: userPhone
+                },
+                theme: {
+                    color: '#059669'
+                }
+            };
+            
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Payment failed. Please try again.');
+        });
+    });
+});
+</script>
+{% endblock %}

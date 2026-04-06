@@ -1,0 +1,80 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Shipping Policy{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
+    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 md:mb-8">Shipping Policy</h1>
+        
+        <div class="text-gray-600 space-y-6 text-sm md:text-base leading-relaxed">
+            <p><strong>Last Updated:</strong> January 2026</p>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">1. Shipping Locations</h2>
+                <p>We currently ship to all addresses within India. We do not offer international shipping at this time.</p>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">2. Processing Time</h2>
+                <p>Orders are processed within 1-2 business days after payment confirmation. You will receive a confirmation email with tracking details once your order has been shipped.</p>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">3. Delivery Time</h2>
+                <p>Estimated delivery times depend on your location:</p>
+                <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                    <li><strong>Metropolitan Cities:</strong> 3-5 business days</li>
+                    <li><strong>Other Cities:</strong> 5-7 business days</li>
+                    <li><strong>Remote Areas:</strong> 7-10 business days</li>
+                </ul>
+                <p class="mt-2">Please note that delivery times may vary during holidays, festivals, or adverse weather conditions.</p>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">4. Shipping Charges</h2>
+                <p>Shipping charges are calculated based on order value and delivery location:</p>
+                <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                    <li><strong>Free Shipping:</strong> On orders above ₹999</li>
+                    <li><strong>Standard Shipping:</strong> ₹49 for orders below ₹999</li>
+                    <li><strong>COD Orders:</strong> Additional ₹50 may apply</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">5. Shipping Partners</h2>
+                <p>We use reputed courier services including:</p>
+                <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                    <li>Delhivery</li>
+                    <li>BlueDart</li>
+                    <li>DTDC</li>
+                    <li>India Post</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">6. Order Tracking</h2>
+                <p>Once your order is shipped, you will receive an email with tracking details. You can track your order using the provided tracking number on the courier's website.</p>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">7. Undeliverable Orders</h2>
+                <p>If an order cannot be delivered due to incorrect address, recipient unavailability, or other reasons, the courier will attempt delivery 2-3 times. After failed attempts, the order will be returned to us. In such cases, we will refund the order value minus shipping charges.</p>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">8. Address Changes</h2>
+                <p>Address changes can be requested within 24 hours of order placement. After this period, we cannot guarantee address modifications as the order may already be processed.</p>
+            </section>
+            
+            <section>
+                <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-3">9. Contact Us</h2>
+                <p>For shipping-related queries, please contact us at:</p>
+                <p class="mt-2"><strong>Email:</strong> info@sugamayurveda.com<br>
+                <strong>Phone:</strong> +91 96257 17655<br>
+                <strong>Hours:</strong> Monday - Saturday, 10:00 AM - 7:00 PM</p>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

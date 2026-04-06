@@ -1,0 +1,83 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block title %}Delete Category{% endblock %}
+
+{% block page_title %}Delete Category{% endblock %}
+{% block page_description %}Remove category from system{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="card">
+        <div class="p-6 border-b border-red-200">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Delete Category</h2>
+                    <p class="text-sm text-gray-600 mt-1">This action cannot be undone</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-6">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-red-600"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">Warning</h3>
+                        <div class="mt-2 text-sm text-red-700">
+                            <p>You are about to delete the category <strong>"{{ category.name }}"</strong>.</p>
+                            <p class="mt-2">This will permanently remove the category from the system.</p>
+                            {% if category.product_count > 0 %}
+                            <p class="mt-2 font-semibold">⚠️ This category contains {{ category.product_count }} product(s). Consider reassigning these products before deletion.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 rounded-lg p-4">
+                <h3 class="text-sm font-medium text-gray-900 mb-2">Category Details</h3>
+                <dl class="grid grid-cols-1 gap-2 text-sm">
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">Name:</dt>
+                        <dd class="font-medium text-gray-900">{{ category.name }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">ID:</dt>
+                        <dd class="font-medium text-gray-900">{{ category.id }}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">Products:</dt>
+                        <dd class="font-medium text-gray-900">{{ category.product_count }}</dd>
+                    </div>
+                    {% if category.description %}
+                    <div>
+                        <dt class="text-gray-500">Description:</dt>
+                        <dd class="font-medium text-gray-900 mt-1">{{ category.description|truncatechars:100 }}</dd>
+                    </div>
+                    {% endif %}
+                </dl>
+            </div>
+            
+            <form method="post" class="mt-6">
+                {% csrf_token %}
+                <div class="flex justify-end space-x-4">
+                    <a href="{% url 'admin_categories' %}" class="btn-secondary">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn-danger">
+                        <i class="fas fa-trash mr-2"></i>Delete Category
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

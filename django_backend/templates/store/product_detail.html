@@ -1,0 +1,191 @@
+{% extends 'store/base.html' %}
+{% load placeholder_tags %}
+
+{% block title %}{{ product.name }} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-2 sm:px-4 py-4 md:py-8">
+    <div class="max-w-6xl mx-auto">
+        <nav class="hidden sm:flex mb-6 text-sm">
+            <a href="{% url 'home' %}" class="text-gray-500 hover:text-green-600">Home</a>
+            <span class="mx-2 text-gray-400">/</span>
+            <a href="{% url 'products' %}" class="text-gray-500 hover:text-green-600">Shop</a>
+            <span class="mx-2 text-gray-400">/</span>
+            <span class="text-gray-900 font-medium truncate">{{ product.name }}</span>
+        </nav>
+
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                
+                <div class="p-4 sm:p-6 border-b lg:border-b-0 lg:border-r border-gray-100">
+                    <div class="relative">
+                        <div class="aspect-square overflow-hidden bg-gray-100 rounded-xl mb-4">
+                            <img id="mainImage" src="{{ product.get_image_url }}" alt="{{ product.name }}" 
+                                 class="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-300 cursor-pointer">
+                        </div>
+                        
+                        {% if product.image %}
+                        <div class="flex lg:grid lg:grid-cols-4 gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+                            <div class="flex-shrink-0 w-20 h-20 sm:w-auto sm:h-auto aspect-square overflow-hidden bg-gray-100 rounded-lg cursor-pointer hover:ring-2 hover:ring-green-500 transition-all"
+                                 onclick="changeImage('{{ product.get_image_url }}')">
+                                <img src="{{ product.get_image_url }}" alt="Thumbnail" class="w-full h-full object-cover">
+                            </div>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-col gap-2">
+                            {% if product.product_type == 'bundle' %}
+                                <span class="bg-green-600 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full shadow-lg">BUNDLE</span>
+                            {% endif %}
+                            {% if not product.available %}
+                                <span class="bg-red-600 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full shadow-lg">OUT OF STOCK</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-5 sm:p-8 flex flex-col">
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <span class="text-xs font-medium text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                            {{ product.category.name }}
+                        </span>
+                        {% if product.size %}
+                            <span class="text-xs text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                                {{ product.size }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 leading-tight">{{ product.name }}</h1>
+                    
+                    <div class="mb-6">
+                        {% if product.price %}
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl font-bold text-green-600">₹{{ product.price }}</span>
+                                <span class="text-gray-500 text-sm">per {{ product.size|default:'unit' }}</span>
+                            </div>
+                        {% else %}
+                            <span class="text-xl text-gray-500">Price on request</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 mb-2">Description</h3>
+                        <p class="text-gray-600 text-sm sm:text-base leading-relaxed">{{ product.description|linebreaks }}</p>
+                    </div>
+                    
+                    {% if product.features %}
+                        <div class="mb-8">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 mb-3">Key Features</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {% for feature in product.features %}
+                                    <div class="flex items-start gap-2 text-sm text-gray-700">
+                                        <svg class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        {{ feature }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mt-auto">
+                        {% if product.available %}
+                            <form action="{% url 'add_to_cart' product.id %}" method="post" class="space-y-4">
+                                {% csrf_token %}
+                                <div class="flex flex-col sm:flex-row items-end sm:items-center gap-4">
+                                    <div class="w-full sm:w-auto">
+                                        <label for="quantity" class="block text-xs font-bold text-gray-700 uppercase mb-2">Quantity</label>
+                                        <div class="flex items-center justify-between border border-gray-300 rounded-xl p-1 w-full sm:w-32">
+                                            <button type="button" onclick="decreaseQuantity()" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors">
+                                                <span class="text-xl">-</span>
+                                            </button>
+                                            <input type="number" name="quantity" id="quantity" value="1" min="1" max="10" 
+                                                   class="w-full text-center bg-transparent border-none focus:ring-0 font-bold">
+                                            <button type="button" onclick="increaseQuantity()" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors">
+                                                <span class="text-xl">+</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="w-full sm:flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                        </svg>
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center gap-3">
+                                <div class="bg-red-100 p-2 rounded-full">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900">Out of Stock</h3>
+                                    <p class="text-sm text-gray-500">Check back soon!</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-gray-100 grid grid-cols-2 gap-4">
+                        <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-500">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2"/></svg>
+                            100% Natural
+                        </div>
+                        <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-500">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2"/></svg>
+                            GMP Certified
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-12 px-2 sm:px-0">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-6">You May Also Like</h2>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                {% for related_product in products|slice:":4" %}
+                    {% if related_product.id != product.id %}
+                        {% include 'store/product_card.html' with product=related_product %}
+                    {% endif %}
+                {% empty %}
+                    <p class="col-span-full text-center text-gray-400 py-8">No related products.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Hide scrollbar for gallery horizontal scroll on mobile */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+
+<script>
+function changeImage(imageSrc) {
+    const main = document.getElementById('mainImage');
+    main.style.opacity = '0';
+    setTimeout(() => {
+        main.src = imageSrc;
+        main.style.opacity = '1';
+    }, 150);
+}
+
+function increaseQuantity() {
+    const input = document.getElementById('quantity');
+    const val = parseInt(input.value);
+    if (val < 10) input.value = val + 1;
+}
+
+function decreaseQuantity() {
+    const input = document.getElementById('quantity');
+    const val = parseInt(input.value);
+    if (val > 1) input.value = val - 1;
+}
+</script>
+{% endblock %}

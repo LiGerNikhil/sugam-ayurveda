@@ -1,0 +1,220 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+{% block page_description %}{{ action }} product information{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <!-- Basic Information -->
+        <div class="card">
+            <div class="p-6 border-b">
+                <h2 class="text-lg font-semibold text-gray-900">Basic Information</h2>
+                <p class="text-sm text-gray-600 mt-1">Product details and categorization</p>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Product Name *
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.slug.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Slug *
+                        </label>
+                        {{ form.slug }}
+                        <p class="mt-1 text-xs text-gray-500">URL-friendly version of the name</p>
+                        {% if form.slug.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.slug.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Category *
+                        </label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.category.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.sub_category.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Sub Category
+                        </label>
+                        {{ form.sub_category }}
+                        {% if form.sub_category.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.sub_category.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.product_type.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Product Type
+                        </label>
+                        {{ form.product_type }}
+                        {% if form.product_type.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.product_type.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.size.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Size
+                        </label>
+                        {{ form.size }}
+                        {% if form.size.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.size.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        Description *
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pricing and Availability -->
+        <div class="card">
+            <div class="p-6 border-b">
+                <h2 class="text-lg font-semibold text-gray-900">Pricing & Availability</h2>
+                <p class="text-sm text-gray-600 mt-1">Set price and availability status</p>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.price.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Price (₹)
+                        </label>
+                        {{ form.price }}
+                        {% if form.price.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.price.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="flex items-center h-5">
+                            {{ form.available }}
+                        </div>
+                        <div class="ml-3">
+                            <label for="{{ form.available.id_for_label }}" class="text-sm font-medium text-gray-700">
+                                Available for Sale
+                            </label>
+                            <p class="text-sm text-gray-500">Uncheck to hide from store</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Images -->
+        <div class="card">
+            <div class="p-6 border-b">
+                <h2 class="text-lg font-semibold text-gray-900">Product Images</h2>
+                <p class="text-sm text-gray-600 mt-1">Upload image or provide image URL</p>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Upload Image
+                        </label>
+                        {{ form.image }}
+                        {% if form.image.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.image.errors.0 }}</p>
+                        {% endif %}
+                        <p class="mt-1 text-xs text-gray-500">Supported formats: JPG, PNG, GIF. Max size: 5MB</p>
+                        
+                        {% if product and product.image %}
+                            <div class="mt-4">
+                                <p class="text-sm font-medium text-gray-700 mb-2">Current Image:</p>
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-32 h-32 object-cover rounded-lg border">
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.image_url.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Or Image URL
+                        </label>
+                        {{ form.image_url }}
+                        {% if form.image_url.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.image_url.errors.0 }}</p>
+                        {% endif %}
+                        <p class="mt-1 text-xs text-gray-500">External image URL (optional)</p>
+                        
+                        {% if product and product.image_url %}
+                            <div class="mt-4">
+                                <p class="text-sm font-medium text-gray-700 mb-2">Current URL Image:</p>
+                                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-32 h-32 object-cover rounded-lg border" onerror="this.style.display='none'">
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Information -->
+        <div class="card">
+            <div class="p-6 border-b">
+                <h2 class="text-lg font-semibold text-gray-900">Additional Information</h2>
+                <p class="text-sm text-gray-600 mt-1">Features and tags for better searchability</p>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.features.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Features
+                        </label>
+                        {{ form.features }}
+                        <p class="mt-1 text-xs text-gray-500">JSON format: ["Feature 1", "Feature 2"]</p>
+                        {% if form.features.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.features.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.tags.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            Tags
+                        </label>
+                        {{ form.tags }}
+                        <p class="mt-1 text-xs text-gray-500">JSON format: ["tag1", "tag2"]</p>
+                        {% if form.tags.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.tags.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form Actions -->
+        <div class="flex justify-end space-x-4">
+            <a href="{% url 'admin_products' %}" class="btn-secondary">
+                Cancel
+            </a>
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-save mr-2"></i>{{ action }} Product
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

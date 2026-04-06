@@ -1,0 +1,140 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6 md:py-12">
+    <!-- Hero Section with Image -->
+    <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 mb-12 lg:mb-16">
+        <!-- Content Section -->
+        <div class="w-full lg:w-1/2 text-center lg:text-left">
+            <div class="space-y-6">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 md:mb-6">{{ site_name }}</h1>
+                <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-6">
+                    {{ site_about_us|default:"Leading provider of natural Ayurvedic products" }}
+                </p>
+                
+                <!-- Mission Section -->
+                <div class="space-y-4">
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4">Our Mission</h2>
+                    <div class="space-y-3 text-gray-600 text-sm md:text-base">
+                        <p>
+                            At {{ site_name }}, we are committed to providing the highest quality Ayurvedic products 
+                            that combine traditional wisdom with modern science. Our mission is to help people achieve 
+                            optimal health and wellness through natural, time-tested remedies.
+                        </p>
+                        <p>
+                            We believe in the power of nature to heal and nurture the body. Every product we offer 
+                            is carefully formulated using authentic Ayurvedic herbs and ingredients, backed by 
+                            scientific research and centuries of traditional use.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Image Section -->
+        <div class="w-full lg:w-1/2">
+            <div class="relative overflow-hidden rounded-2xl shadow-xl">
+                <img src="{% static 'images/comparison.jpeg' %}" 
+                     alt="About {{ site_name }}" 
+                     class="w-full h-auto object-contain">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Values Section -->
+    <div class="mb-12 lg:mb-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8 lg:mb-12">Our Values</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div class="text-center">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2">100% Natural</h3>
+                <p class="text-gray-600 text-sm md:text-base">Pure Ayurvedic ingredients with no side effects</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2">GMP Certified</h3>
+                <p class="text-gray-600 text-sm md:text-base">Manufactured in certified facilities</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2">Fast Delivery</h3>
+                <p class="text-gray-600 text-sm md:text-base">Quick shipping across India</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Certifications Section -->
+    <div class="mb-12 lg:mb-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8 lg:mb-12">Our Certifications</h2>
+        <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+            <span class="px-4 py-2 md:px-6 md:py-3 bg-green-100 text-green-700 rounded-full text-sm md:text-base font-medium">GMP Certified</span>
+            <span class="px-4 py-2 md:px-6 md:py-3 bg-green-100 text-green-700 rounded-full text-sm md:text-base font-medium">Ayush Approved</span>
+            <span class="px-4 py-2 md:px-6 md:py-3 bg-green-100 text-green-700 rounded-full text-sm md:text-base font-medium">ISO Certified</span>
+            <span class="px-4 py-2 md:px-6 md:py-3 bg-green-100 text-green-700 rounded-full text-sm md:text-base font-medium">100% Natural</span>
+        </div>
+    </div>
+    
+    <!-- Why Choose Us Section -->
+    <div class="mb-12 lg:mb-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8 lg:mb-12">Why Choose Us?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div class="text-center p-4 md:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2">Quality Assured</h3>
+                <p class="text-gray-600 text-xs md:text-sm">All products are manufactured in GMP certified facilities.</p>
+            </div>
+            
+            <div class="text-center p-4 md:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2">Fast Delivery</h3>
+                <p class="text-gray-600 text-xs md:text-sm">Quick delivery across India with secure packaging.</p>
+            </div>
+            
+            <div class="text-center p-4 md:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2">Expert Support</h3>
+                <p class="text-gray-600 text-xs md:text-sm">Our Ayurvedic experts are available for consultation.</p>
+            </div>
+            
+            <div class="text-center p-4 md:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v5.586a1 1 0 00-.707.293l-5.414 5.414a1 1 0 00-.293.707L5.586 16H4a1 1 0 00-1 1v-1a1 1 0 00-1-1h1.586l4.707-4.707C10.923 10.149 11 10.586V16a1 1 0 001 1h1a1 1 0 001-1v-5.586z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2">24/7 Service</h3>
+                <p class="text-gray-600 text-xs md:text-sm">Round-the-clock customer service and support.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

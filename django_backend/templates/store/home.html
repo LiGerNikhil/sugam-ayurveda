@@ -1,0 +1,2321 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% load placeholder_tags %}
+{% load static %}
+<!-- Product Categories -->
+        <div class="py-8 md:py-12">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center mb-6 md:mb-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
+                        Shop by Category
+                    </h2>
+                    <div class="flex gap-2">
+                        <button onclick="scrollCategories('left')" 
+                                class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-green-50 transition-colors">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button onclick="scrollCategories('right')" 
+                                class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-green-50 transition-colors">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Category Slider Container -->
+                <div class="relative overflow-hidden">
+                    <div class="category-carousel flex gap-4 md:gap-6">
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        <!-- Duplicate categories for seamless infinite loop -->
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% for category in categories %}
+                            <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
+                                <a href="{% url 'products' %}?category={{ category.name }}" 
+                                   class="flex flex-col items-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-green-100 shadow-md group-hover:shadow-lg bg-green-50 p-1">
+                                        {% if category.image %}
+                                            <img src="{{ category.image.url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif category.image_url %}
+                                            <img src="{{ category.image_url }}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Diabetes' in category.name %}
+                                            <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Liver' in category.name %}
+                                            <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Gallbladder' in category.name %}
+                                            <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                            <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                            <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                            <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                            <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                            <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                            <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                            <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" 
+                                                 class="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110">
+                                        {% else %}
+                                            <div class="w-full h-full flex items-center justify-center bg-green-100 rounded-full">
+                                                {% autoescape off %}{% category_icon_svg category.name 40 %}{% endautoescape %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-3 text-sm font-medium text-gray-700 text-center group-hover:text-green-600 transition-colors">
+                                        {{ category.name }}
+                                    </h3>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+        .category-carousel {
+            animation: slideCategories 25s linear infinite;
+        }
+        
+        @keyframes slideCategories {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .category-carousel:hover {
+            animation-play-state: paused;
+        }
+        </style>
+
+<!-- Hero Section - Slideshow -->
+<section class="py-2 md:py-4 bg-gray-50">
+    <div class="container mx-auto px-2 md:px-4">
+        {% load static %}
+        <div class="relative overflow-hidden h-48 md:h-64 lg:h-80" id="slideshow">
+            <div class="slideshow-container h-full">
+                <div class="slideshow-slide active block absolute inset-0">
+                    <img src="{% static 'images/cover.png' %}" alt="Sugam Ayurveda - Pure Herbs Pure Health" class="w-full h-full object-contain bg-white">
+                </div>
+                <div class="slideshow-slide block absolute inset-0">
+                    <img src="{% static 'images/cover1.png' %}" alt="Sugam Ayurveda Cover 1" class="w-full h-full object-contain bg-white">
+                </div>
+                <div class="slideshow-slide block absolute inset-0">
+                    <img src="{% static 'images/Gemini_Generated_Image_fk5engfk5engfk5e.png' %}" alt="Sugam Ayurveda Cover 1" class="w-full h-full object-contain bg-white">
+                </div>
+                <div class="slideshow-slide block absolute inset-0">
+                    <img src="{% static 'images/cover2.png' %}" alt="Sugam Ayurveda Cover 2" class="w-full h-full object-contain bg-white">
+                </div>
+                <div class="slideshow-slide block absolute inset-0">
+                    <img src="{% static 'images/cover3.png' %}" alt="Sugam Ayurveda Cover 3" class="w-full h-full object-contain bg-white">
+                </div>
+            </div>
+            
+            <!-- Navigation dots -->
+            <div class="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 flex gap-1 md:gap-2 z-10">
+                <button class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-white/80 hover:bg-white slideshow-dot active" data-slide="0"></button>
+                <button class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white slideshow-dot" data-slide="1"></button>
+                <button class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white slideshow-dot" data-slide="2"></button>
+                <button class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white slideshow-dot" data-slide="3"></button>
+                <button class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white slideshow-dot" data-slide="4"></button>
+            </div>
+            
+            <!-- Navigation arrows -->
+            <button class="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 w-6 h-6 md:w-8 md:h-8 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center shadow-lg slideshow-prev z-20">
+                <svg class="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <button class="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 w-6 h-6 md:w-8 md:h-8 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center shadow-lg slideshow-next z-20">
+                <svg class="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Product Slider Section -->
+<section class="py-8 md:py-16 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6">
+        <div class="text-center mb-8 md:mb-12">
+            <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                Featured
+                <span class="text-green-600">Products</span>
+            </h2>
+            <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+                Discover our best-selling Ayurvedic remedies for optimal health and wellness
+            </p>
+        </div>
+        
+        <!-- Product Slider Container -->
+        <div class="relative">
+            <!-- Navigation Arrows -->
+            <button id="slider-prev" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition-colors">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <button id="slider-next" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition-colors">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+            
+            <!-- Slider Track -->
+            <div class="overflow-hidden rounded-2xl">
+                <div id="product-slider" class="flex transition-transform duration-300 ease-in-out">
+                    {% for product in products %}
+                    <div class="product-slide flex-shrink-0 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-2 md:px-4">
+                        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full">
+                            <!-- Product Image -->
+                            <div class="relative overflow-hidden h-48 md:h-56">
+                                <img src="{{ product.get_image_url }}" 
+                                     alt="{{ product.name }}" 
+                                     class="w-full h-full object-cover">
+                                {% if product.featured %}
+                                <div class="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                    Featured
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Product Details -->
+                            <div class="p-4 md:p-6">
+                                <div class="mb-2">
+                                    <h3 class="font-bold text-gray-900 text-sm md:text-base lg:text-lg mb-2 line-clamp-2">
+                                        {{ product.name }}
+                                    </h3>
+                                    {% if product.category %}
+                                    <span class="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
+                                        {{ product.category.name }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Price Section -->
+                                <div class="mb-4">
+                                    {% if product.price %}
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="text-2xl md:text-3xl font-bold text-green-600">₹{{ product.price }}</span>
+                                        {% if product.old_price %}
+                                        <span class="text-lg text-gray-400 line-through">₹{{ product.old_price }}</span>
+                                        {% endif %}
+                                    </div>
+                                    {% else %}
+                                    <span class="text-lg text-gray-500">Price on request</span>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Product Features -->
+                                {% if product.features %}
+                                <div class="mb-4">
+                                    <p class="text-xs md:text-sm text-gray-600 line-clamp-2">
+                                        {{ product.features|truncatewords:15 }}
+                                    </p>
+                                </div>
+                                {% endif %}
+                                
+                                <!-- Action Buttons -->
+                                <div class="flex gap-2">
+                                   
+                                    <a href="{% url 'product_detail' product.slug %}" 
+                                       class="flex-1 bg-gray-100 text-gray-700 font-semibold py-2 md:py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors text-sm md:text-base text-center">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slider Indicators -->
+        <div class="flex justify-center gap-2 mt-6">
+            {% for product in products %}
+            <button class="slider-indicator w-2 h-2 rounded-full bg-gray-300 transition-colors" data-slide="{{ forloop.counter0 }}"></button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .slideshow-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .slideshow-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        width: 100%;
+        height: 100%;
+    }
+    .slideshow-slide.active {
+        position: absolute;
+        opacity: 1;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.slideshow-slide');
+        const dots = document.querySelectorAll('.slideshow-dot');
+        const prevBtn = document.querySelector('.slideshow-prev');
+        const nextBtn = document.querySelector('.slideshow-next');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                dots[i].classList.remove('active');
+                dots[i].style.backgroundColor = 'rgba(255,255,255,0.5)';
+            });
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            dots[index].style.backgroundColor = 'rgba(255,255,255,0.9)';
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+        
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+        
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+        
+        // Auto-play slideshow
+        setInterval(nextSlide, 5000);
+    });
+</script>
+
+<!-- Best Sellers -->
+<section class="py-8 md:py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 md:mb-12">
+            <div class="text-center sm:text-left">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Best Sellers</h2>
+                <p class="text-gray-600 mt-2 text-sm md:text-base">Our most popular Ayurvedic products</p>
+            </div>
+            <a href="{% url 'products' %}" class="text-green-600 font-medium hover:underline flex items-center gap-1 text-sm md:text-base">
+                View All
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {% for product in products|slice:":8" %}
+                {% include 'store/product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- India's #1 Ayurvedic Treatment for Kidney Stones -->
+<section class="py-8 md:py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            <!-- Image Section -->
+            <div class="w-full lg:w-1/2">
+                <div class="relative overflow-hidden rounded-2xl shadow-xl">
+                    <img src="{% static 'images/tablet.jpeg' %}" 
+                         alt="India's #1 Ayurvedic Treatment for Kidney Stones" 
+                         class="w-full h-auto object-contain">
+                </div>
+            </div>
+            
+            <!-- Content Section -->
+            <div class="w-full lg:w-1/2 text-center lg:text-left">
+                <div class="space-y-6">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                        India's No.1 Ayurvedic Treatment
+                        <span class="text-green-600">for Kidney Stones</span>
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">GMP Certified</h3>
+                                <p class="text-gray-600 text-sm md:text-base">All products manufactured in GMP certified facilities with strict quality control</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">100% Natural Ingredients</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Pure Ayurvedic herbs with no side effects or chemicals</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Proven Results</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Thousands of satisfied customers with successful kidney stone treatment</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Button -->
+                    <div class="pt-6">
+                        <a href="{% url 'products' %}" 
+                           class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M8 11v4a4 4 0 008 0v4M12 15v-6"></path>
+                            </svg>
+                            Shop Kidney Stone Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Proven Bundles for Your Health Concerns -->
+<section class="py-8 md:py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <!-- Content Section -->
+            <div class="order-2 lg:order-1 text-center lg:text-left">
+                <div class="space-y-6">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                        Proven Bundles for
+                        <span class="text-green-600">Your Health Concerns</span>
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2zm-7 4a2 2 0 11-4 0v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Complete Treatment Plans</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Curated bundles for specific health conditions with synergistic effects</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .438-3 2.062 0 1.41.563 1.872 3 3.872 0 2.412-.438 3-2.062 0-1.41-.563-1.872-3-3.872z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Cost Effective</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Save up to 30% compared to buying individual products</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v5.586a1 1 0 00-.707.293l-5.414 5.414a1 1 0 00-.293.707L5.586 16H4a1 1 0 00-1 1v-1a1 1 0 00-1-1h1.586l4.707-4.707C10.923 10.149 11 10.586V16a1 1 0 001 1h1a1 1 0 001-1v-5.586z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Expert Recommended</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Formulated by Ayurvedic experts for maximum effectiveness</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Button -->
+                    <div class="pt-6">
+                        <a href="{% url 'products' %}" 
+                           class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M8 11v4a4 4 0 008 0v4M12 15v-6"></path>
+                            </svg>
+                            View All Bundles
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Section -->
+            <div class="order-1 lg:order-2 w-full lg:w-auto">
+                <div class="relative overflow-hidden rounded-2xl shadow-xl max-w-md mx-auto lg:mx-0 lg:max-w-lg">
+                    <img src="{% static 'images/proven.png' %}" 
+                         alt="Proven Bundles for Your Health Concerns" 
+                         class="w-full h-auto object-contain">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- KidneyClean Capsule Section -->
+<section class="py-8 md:py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <!-- Content Section -->
+            <div class="text-center lg:text-left">
+                <div class="space-y-6">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                        KidneyClean
+                        <span class="text-green-600">Capsule</span>
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Natural Stone Dissolution</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Breaks down kidney stones naturally without surgery</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Fast Relief</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Quick pain relief and improved kidney function</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">100% Safe</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Ayurvedic formula with no side effects</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Button -->
+                    <div class="pt-6">
+                        <a href="{% url 'products' %}" 
+                           class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M8 11v4a4 4 0 008 0v4M12 15v-6"></path>
+                            </svg>
+                            Shop KidneyClean
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Images Section -->
+            <div class="w-full">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <!-- Front Image -->
+                    <div class="relative overflow-hidden rounded-xl shadow-lg">
+                        <img src="{% static 'images/tab-front.png' %}" 
+                             alt="KidneyClean Capsule Front" 
+                             class="w-full h-auto object-contain bg-gray-50 p-4">
+                    </div>
+                    <!-- Back Image -->
+                    <div class="relative overflow-hidden rounded-xl shadow-lg">
+                        <img src="{% static 'images/tab-back.jpeg' %}" 
+                             alt="KidneyClean Capsule Back" 
+                             class="w-full h-auto object-contain bg-gray-50 p-4">
+                    </div>
+                </div>
+                
+                <!-- Mobile Responsive - Single Image -->
+                <!-- <div class="md:hidden mt-4">
+                    <div class="relative overflow-hidden rounded-xl shadow-lg">
+                        <img src="{% static 'images/tab-front.png' %}" 
+                             alt="KidneyClean Capsule Front" 
+                             class="w-full h-auto object-contain bg-gray-50 p-4">
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Doctor Consultation -->
+<section class="py-8 md:py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            <!-- Image Section -->
+            <div class="w-full lg:w-1/2">
+                <div class="relative overflow-hidden rounded-2xl shadow-xl">
+                    <img src="{% static 'images/doctor-consultation.jpeg' %}" 
+                         alt="Doctor Consultation" 
+                         class="w-full h-auto object-contain">
+                </div>
+            </div>
+            
+            <!-- Content Section -->
+            <div class="w-full lg:w-1/2 text-center lg:text-left">
+                <div class="space-y-6">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                        Consult with
+                        <span class="text-green-600">Expert Doctors</span>
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 0l4-4m5 4v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Qualified Ayurvedic Doctors</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Get personalized advice from certified Ayurvedic practitioners</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Free Consultation</h3>
+                                <p class="text-gray-600 text-sm md:text-base">No consultation charges for first-time customers</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Personalized Treatment</h3>
+                                <p class="text-gray-600 text-sm md:text-base">Customized health plans based on your specific needs</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Button -->
+                    <div class="pt-6">
+                        <a href="{% url 'contact' %}" 
+                           class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-sm md:text-base">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.83 2V14a2 2 0 002-2H5a2 2 0 00-2-2V10a2 2 0 00-2-2z"></path>
+                            </svg>
+                            Book Consultation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customer Satisfaction -->
+<section class="py-8 md:py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-6 md:mb-10">
+            <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-2 md:mb-3">
+                Customer
+                <span class="text-green-600">Success Stories</span>
+            </h2>
+            <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+                Real results from real customers who transformed their health with our Ayurvedic solutions
+            </p>
+        </div>
+        
+        <!-- Customer Results Carousel -->
+        <div class="relative overflow-hidden rounded-2xl shadow-xl">
+            <div class="customer-results-carousel flex gap-2">
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results1.jpeg', 'Customer Success Story 1')">
+                    <img src="{% static 'images/customer-results1.jpeg' %}" alt="Customer Success Story 1" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results2.jpeg', 'Customer Success Story 2')">
+                    <img src="{% static 'images/customer-results2.jpeg' %}" alt="Customer Success Story 2" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results3.jpeg', 'Customer Success Story 3')">
+                    <img src="{% static 'images/customer-results3.jpeg' %}" alt="Customer Success Story 3" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results4.jpeg', 'Customer Success Story 4')">
+                    <img src="{% static 'images/customer-results4.jpeg' %}" alt="Customer Success Story 4" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-result5.png', 'Customer Success Story 5')">
+                    <img src="{% static 'images/customer-result5.png' %}" alt="Customer Success Story 5" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-result6.png', 'Customer Success Story 6')">
+                    <img src="{% static 'images/customer-result6.png' %}" alt="Customer Success Story 6" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <!-- Duplicate images for seamless infinite loop -->
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results1.jpeg', 'Customer Success Story 1')">
+                    <img src="{% static 'images/customer-results1.jpeg' %}" alt="Customer Success Story 1" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results2.jpeg', 'Customer Success Story 2')">
+                    <img src="{% static 'images/customer-results2.jpeg' %}" alt="Customer Success Story 2" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results3.jpeg', 'Customer Success Story 3')">
+                    <img src="{% static 'images/customer-results3.jpeg' %}" alt="Customer Success Story 3" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-results4.jpeg', 'Customer Success Story 4')">
+                    <img src="{% static 'images/customer-results4.jpeg' %}" alt="Customer Success Story 4" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-result5.png', 'Customer Success Story 5')">
+                    <img src="{% static 'images/customer-result5.png' %}" alt="Customer Success Story 5" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+                <div class="flex-shrink-0 w-1/6 cursor-pointer" onclick="showFullImage(event, 'customer-result6.png', 'Customer Success Story 6')">
+                    <img src="{% static 'images/customer-result6.png' %}" alt="Customer Success Story 6" class="w-full h-64 md:h-96 lg:h-[458px] object-cover hover:opacity-90 transition-opacity duration-300 rounded-lg">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Full Image Modal -->
+        <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4" onclick="closeFullImage()">
+            <div class="relative max-w-7xl max-h-full" onclick="event.stopPropagation()">
+                <button onclick="closeFullImage()" class="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-70 transition-colors z-10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+                <p id="modalCaption" class="text-white text-center mt-4 text-lg"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.customer-results-carousel {
+    animation: slideCustomer 24s linear infinite;
+}
+
+@keyframes slideCustomer {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.customer-results-carousel:hover {
+    animation-play-state: paused;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to show full image modal
+    window.showFullImage = function(event, imageName, caption) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        
+        // Construct the full image URL
+        const imageUrl = '/static/images/' + imageName;
+        
+        modalImage.src = imageUrl;
+        modalImage.alt = caption;
+        modalCaption.textContent = caption;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    };
+    
+    // Function to close full image modal
+    window.closeFullImage = function() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    };
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeFullImage();
+        }
+    });
+});
+</script>
+
+<!-- Trust & Certifications -->
+<section class="py-6 md:py-12 lg:py-16 bg-gradient-to-br from-green-50 via-white to-green-50">
+    <div class="container mx-auto px-3 sm:px-4 md:px-6">
+        <div class="text-center mb-6 md:mb-10 lg:mb-12">
+            <h2 class="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 leading-tight mb-2 md:mb-3">
+                Our
+                <span class="text-green-600">Trust & Credentials</span>
+            </h2>
+            <p class="text-gray-600 text-xs md:text-sm lg:text-base max-w-2xl mx-auto">
+                Verified and certified by trusted authorities. Your health is our priority.
+            </p>
+        </div>
+        
+        <!-- Trust Badges Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 lg:gap-8 max-w-7xl mx-auto mb-6 md:mb-10">
+            <!-- Verified Business -->
+            <div class="bg-white p-3 md:p-6 lg:p-8 rounded-xl md:rounded-2xl shadow-md md:shadow-lg border border-gray-100 text-center hover:shadow-lg md:hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-2 md:mb-4 lg:mb-5 shadow-inner">
+                    <svg class="w-5 h-5 md:w-8 md:h-8 lg:w-10 lg:h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-900 mb-1 md:mb-2 text-xs md:text-base lg:text-lg">Verified Business</h3>
+                <p class="text-gray-600 text-[10px] md:text-sm">Government Registered</p>
+            </div>
+            
+            <!-- Top Rated on Google -->
+            <div class="bg-white p-3 md:p-6 lg:p-8 rounded-xl md:rounded-2xl shadow-md md:shadow-lg border border-gray-100 text-center hover:shadow-lg md:hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-red-50 to-red-100 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-2 md:mb-4 lg:mb-5 shadow-inner">
+                    <div class="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 via-red-500 via-yellow-500 to-green-500 bg-clip-text text-transparent">
+                        G
+                    </div>
+                </div>
+                <h3 class="font-bold text-gray-900 mb-1 md:mb-2 text-xs md:text-base lg:text-lg">Google Rated</h3>
+                <div class="flex items-center justify-center gap-0 md:gap-0.5 text-yellow-500 mb-1 md:mb-2">
+                    <svg class="w-3 h-3 md:w-4 md:h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <svg class="w-3 h-3 md:w-4 md:h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <svg class="w-3 h-3 md:w-4 md:h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <svg class="w-3 h-3 md:w-4 md:h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <svg class="w-3 h-3 md:w-4 md:h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <p class="text-gray-600 text-[10px] md:text-sm font-semibold">4.9/5 Rating</p>
+            </div>
+            
+            <!-- Clinically Proven -->
+            <div class="bg-white p-3 md:p-6 lg:p-8 rounded-xl md:rounded-2xl shadow-md md:shadow-lg border border-gray-100 text-center hover:shadow-lg md:hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-2 md:mb-4 lg:mb-5 shadow-inner">
+                    <svg class="w-5 h-5 md:w-8 md:h-8 lg:w-10 lg:h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-900 mb-1 md:mb-2 text-xs md:text-base lg:text-lg">Clinically Proven</h3>
+                <p class="text-gray-600 text-[10px] md:text-sm">Lab Tested</p>
+            </div>
+            
+            <!-- Authentic Products -->
+            <div class="bg-white p-3 md:p-6 lg:p-8 rounded-xl md:rounded-2xl shadow-md md:shadow-lg border border-gray-100 text-center hover:shadow-lg md:hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-green-50 to-green-100 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-2 md:mb-4 lg:mb-5 shadow-inner">
+                    <svg class="w-5 h-5 md:w-8 md:h-8 lg:w-10 lg:h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-gray-900 mb-1 md:mb-2 text-xs md:text-base lg:text-lg">100% Authentic</h3>
+                <p class="text-gray-600 text-[10px] md:text-sm">Pure Herbs</p>
+            </div>
+        </div>
+        
+        <!-- Certificate Sliding Carousel -->
+        <div class="relative overflow-hidden mb-6 md:mb-10">
+            <div class="certificate-carousel flex gap-4 md:gap-6 animate-slide">
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <!-- Duplicate images for seamless infinite loop -->
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+
+                <img src="{% static 'images/certificate1.png' %}" alt="Certificate 1" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate2.png' %}" alt="Certificate 2" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate3.png' %}" alt="Certificate 3" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate4.png' %}" alt="Certificate 4" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+                <img src="{% static 'images/certificate5.png' %}" alt="Certificate 5" class="flex-shrink-0 w-32 h-24 md:w-48 md:h-36 object-contain">
+            </div>
+        </div>
+        
+        <style>
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .certificate-carousel {
+            animation: slide 20s linear infinite;
+        }
+        
+        .certificate-carousel:hover {
+            animation-play-state: paused;
+        }
+        </style>
+        
+        <!-- Certificates Banner -->
+        <!-- <div class="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl border border-gray-100 p-4 md:p-8 lg:p-10 max-w-6xl mx-auto">
+            <div class="flex flex-col items-center gap-4 md:gap-6 lg:gap-8">
+                <div class="text-center">
+                    <h3 class="text-base md:text-xl lg:text-2xl font-bold text-gray-900 mb-1 md:mb-3">Certified & Trusted</h3>
+                    <p class="text-gray-600 text-xs md:text-sm lg:text-base">Quality assured by recognized authorities</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 lg:gap-6">
+                   
+                    <div class="flex items-center gap-1 md:gap-2 bg-gradient-to-br from-green-50 to-green-100 px-3 md:px-6 py-2 md:py-4 rounded-lg md:rounded-xl border border-green-200">
+                        <div class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-[10px] md:text-xs lg:text-sm font-bold text-gray-800">GMP</span>
+                    </div>
+                    
+                    
+                    <div class="flex items-center gap-1 md:gap-2 bg-gradient-to-br from-blue-50 to-blue-100 px-3 md:px-6 py-2 md:py-4 rounded-lg md:rounded-xl border border-blue-200">
+                        <div class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-[10px] md:text-xs lg:text-sm font-bold text-gray-800">ISO</span>
+                    </div>
+                    
+                   
+                    <div class="flex items-center gap-1 md:gap-2 bg-gradient-to-br from-purple-50 to-purple-100 px-3 md:px-6 py-2 md:py-4 rounded-lg md:rounded-xl border border-purple-200">
+                        <div class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-[10px] md:text-xs lg:text-sm font-bold text-gray-800">AYUSH</span>
+                    </div>
+                    
+                   
+                    <div class="flex items-center gap-1 md:gap-2 bg-gradient-to-br from-orange-50 to-orange-100 px-3 md:px-6 py-2 md:py-4 rounded-lg md:rounded-xl border border-orange-200">
+                        <div class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-[10px] md:text-xs lg:text-sm font-bold text-gray-800">FSSAI</span>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</section>
+
+<!-- Sexual Health Section -->
+<section class="py-8 md:py-16 bg-gradient-to-br from-green-50 to-green-50">
+    <div class="container mx-auto px-4 sm:px-6">
+        <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            <!-- Content Section -->
+            <div class="w-full lg:w-1/2 text-center lg:text-left">
+                <div class="space-y-6">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                        Sexual Health
+                        <span class="text-green-600">Solutions</span>
+                    </h2>
+                    <p class="text-gray-600 text-sm md:text-base leading-relaxed">
+                        Experience renewed vitality and confidence with our natural Ayurvedic formulations. Our sexual health products are carefully crafted using traditional herbs and modern research to address intimate wellness concerns safely and effectively.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 mb-1 text-sm md:text-base">100% Natural Ingredients</h3>
+                                <p class="text-gray-600 text-xs md:text-sm">Pure herbal extracts with no side effects</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 mb-1 text-sm md:text-base">Clinically Tested</h3>
+                                <p class="text-gray-600 text-xs md:text-sm">Proven results with scientific validation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 mb-1 text-sm md:text-base">Safe & Confidential</h3>
+                                <p class="text-gray-600 text-xs md:text-sm">Discreet packaging and secure ordering</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Section -->
+            <div class="w-full lg:w-1/2">
+                <div class="relative overflow-hidden rounded-2xl shadow-xl">
+                    <img src="{% static 'images/sexual-health.png' %}" 
+                         alt="Sexual Health Solutions" 
+                         class="w-full h-auto object-cover">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Success Rate -->
+<section class="py-8 md:py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <!-- Content Section -->
+        <div class="text-center lg:text-center mb-8 md:mb-12">
+            <div class="space-y-6">
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                    High Success
+                    <span class="text-green-600">Rate</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Proven Results</h3>
+                            <p class="text-gray-600 text-sm md:text-base">Over 10,000 successful treatments with positive health outcomes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 7h7a4 4 0 00-4 4v10a2 2 0 002 2H6a2 2 0 01-2-2V7a2 2 0 00-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Expert Formulations</h3>
+                            <p class="text-gray-600 text-sm md:text-base">Scientifically developed Ayurvedic formulas with traditional herbs</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m6-6a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Safe & Effective</h3>
+                            <p class="text-gray-600 text-sm md:text-base">No side effects, GMP certified, and clinically tested</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CTA Button -->
+                <div class="pt-6">
+                    <!-- <a href="{% url 'products' %}" 
+                       class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M8 11v4a4 4 0 008 0v4M12 15v-6"></path>
+                        </svg>
+                        View Success Stories
+                    </a> -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Images Section - Top to Bottom in Web View -->
+        <div class="space-y-8 lg:space-y-12">
+            <!-- <div class="relative overflow-hidden">
+                <img src="{% static 'images/journey.jpeg' %}" 
+                     alt="High Success Rate" 
+                     class="w-full h-auto object-contain">
+            </div> -->
+            
+            <!-- <div class="relative overflow-hidden">
+                <img src="{% static 'images/success.jpeg' %}" 
+                     alt="High Success Rate" 
+                     class="w-full h-auto object-contain">
+            </div> -->
+            
+            <div class="relative overflow-hidden">
+                <img src="{% static 'images/comparison.jpeg' %}" 
+                     alt="High Success Rate" 
+                     class="w-full h-auto object-contain">
+            </div>
+            <div class="relative overflow-hidden">
+                <img src="{% static 'images/clients.jpeg' %}" 
+                     alt="High Success Rate" 
+                     class="w-full h-auto object-contain">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-8 md:py-16 bg-green-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8 md:mb-12">Why Choose Sugam Ayurveda?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div class="text-center p-4 md:p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2 text-sm md:text-base">GMP Certified</h3>
+                <p class="text-gray-600 text-xs md:text-sm">All products manufactured in GMP certified facilities</p>
+            </div>
+            <div class="text-center p-4 md:p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2 text-sm md:text-base">100% Natural</h3>
+                <p class="text-gray-600 text-xs md:text-sm">Pure Ayurvedic herbs with no side effects</p>
+            </div>
+            <div class="text-center p-4 md:p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2 text-sm md:text-base">Fast Delivery</h3>
+                <p class="text-gray-600 text-xs md:text-sm">Quick delivery across India with secure packaging</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+<!-- JavaScript for Product Slider -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('product-slider');
+    const prevBtn = document.getElementById('slider-prev');
+    const nextBtn = document.getElementById('slider-next');
+    const indicators = document.querySelectorAll('.slider-indicator');
+    const slides = document.querySelectorAll('.product-slide');
+    
+    let currentSlide = 0;
+    const slidesPerView = getSlidesPerView();
+    const totalSlides = slides.length;
+    const maxSlide = Math.max(0, totalSlides - slidesPerView);
+    
+    function getSlidesPerView() {
+        if (window.innerWidth >= 1280) return 4; // xl
+        if (window.innerWidth >= 1024) return 3; // lg
+        if (window.innerWidth >= 768) return 2;  // md
+        return 1; // sm
+    }
+    
+    function updateSlider() {
+        const slideWidth = 100 / slidesPerView;
+        const translateX = -currentSlide * slideWidth;
+        slider.style.transform = `translateX(${translateX}%)`;
+        
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+            if (Math.floor(index / slidesPerView) === currentSlide) {
+                indicator.classList.add('bg-green-600');
+                indicator.classList.remove('bg-gray-300');
+            } else {
+                indicator.classList.remove('bg-green-600');
+                indicator.classList.add('bg-gray-300');
+            }
+        });
+    }
+    
+    function nextSlide() {
+        if (currentSlide < maxSlide) {
+            currentSlide++;
+            updateSlider();
+        }
+    }
+    
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlider();
+        }
+    }
+    
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    
+    // Auto-slide every 4 seconds
+    setInterval(nextSlide, 4000);
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const newSlidesPerView = getSlidesPerView();
+        if (newSlidesPerView !== slidesPerView) {
+            location.reload(); // Simple reload on resize
+        }
+    });
+    
+    // Initialize
+    updateSlider();
+});
+
+// Add to Cart Function
+function addToCart(productId) {
+    fetch(`/cart/add/${productId}/`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            showNotification('Product added to cart successfully!', 'success');
+            
+            // Update cart count if element exists
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(element => {
+                element.textContent = data.cart_count;
+            });
+        } else {
+            showNotification(data.error || 'Failed to add product to cart', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('An error occurred. Please try again.', 'error');
+    });
+}
+
+// Notification Function
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transform transition-all duration-300 ${
+        type === 'success' ? 'bg-green-600 text-white' : 
+        type === 'error' ? 'bg-red-600 text-white' : 
+        'bg-blue-600 text-white'
+    }`;
+    notification.innerHTML = `
+        <div class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                ${type === 'success' ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>' :
+                  type === 'error' ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m6 4H6m6-4a9 9 0 11-18 0 9 9 0 0118 0z"></path>' :
+                  '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'}
+            </svg>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+</script>

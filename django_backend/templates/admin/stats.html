@@ -1,0 +1,265 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block title %}Statistics - {{ site_info.name }}{% endblock %}
+
+{% block page_title %}Statistics{% endblock %}
+{% block page_description %}Comprehensive store analytics and insights{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Store Statistics</h1>
+                    <p class="text-gray-600 mt-2">Comprehensive analytics and business insights</p>
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="window.print()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-print mr-2"></i>Print Report
+                    </button>
+                    <a href="{% url 'admin_dashboard' %}" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Products Statistics -->
+            <div class="card p-6">
+                <div class="flex items-center mb-4">
+                    <div class="p-3 bg-green-100 rounded-full">
+                        <i class="fas fa-box text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Products</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Total Products</span>
+                        <span class="text-2xl font-bold text-gray-900">{{ stats.total_products }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Available Products</span>
+                        <span class="text-2xl font-bold text-green-600">{{ stats.available_products }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Out of Stock</span>
+                        <span class="text-2xl font-bold text-red-600">{{ stats.out_of_stock_products }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Low Stock Items</span>
+                        <span class="text-2xl font-bold text-yellow-600">{{ stats.low_stock_products }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Statistics -->
+            <div class="card p-6">
+                <div class="flex items-center mb-4">
+                    <div class="p-3 bg-blue-100 rounded-full">
+                        <i class="fas fa-tags text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Categories</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Total Categories</span>
+                        <span class="text-2xl font-bold text-gray-900">{{ stats.total_categories }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Empty Categories</span>
+                        <span class="text-2xl font-bold text-orange-600">{{ stats.empty_categories }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Categories with Products</span>
+                        <span class="text-2xl font-bold text-green-600">{{ stats.categories_with_products }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Avg Products/Category</span>
+                        <span class="text-2xl font-bold text-blue-600">{{ stats.avg_products_per_category|floatformat:1 }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Statistics -->
+            <div class="card p-6">
+                <div class="flex items-center mb-4">
+                    <div class="p-3 bg-purple-100 rounded-full">
+                        <i class="fas fa-shopping-bag text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Orders</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Total Orders</span>
+                        <span class="text-2xl font-bold text-gray-900">{{ stats.total_orders }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Pending Orders</span>
+                        <span class="text-2xl font-bold text-yellow-600">{{ stats.pending_orders }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Processing Orders</span>
+                        <span class="text-2xl font-bold text-blue-600">{{ stats.processing_orders }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Shipped Orders</span>
+                        <span class="text-2xl font-bold text-purple-600">{{ stats.shipped_orders }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Delivered Orders</span>
+                        <span class="text-2xl font-bold text-green-600">{{ stats.delivered_orders }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Cancelled Orders</span>
+                        <span class="text-2xl font-bold text-red-600">{{ stats.cancelled_orders }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Statistics -->
+            <div class="card p-6">
+                <div class="flex items-center mb-4">
+                    <div class="p-3 bg-red-100 rounded-full">
+                        <i class="fas fa-users text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Users</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Total Users</span>
+                        <span class="text-2xl font-bold text-gray-900">{{ stats.total_users }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Active Users</span>
+                        <span class="text-2xl font-bold text-green-600">{{ stats.active_users }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Inactive Users</span>
+                        <span class="text-2xl font-bold text-gray-600">{{ stats.inactive_users }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">New Users (This Month)</span>
+                        <span class="text-2xl font-bold text-blue-600">{{ stats.new_users_this_month }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Admin Users</span>
+                        <span class="text-2xl font-bold text-purple-600">{{ stats.admin_users }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Statistics -->
+            <div class="card p-6">
+                <div class="flex items-center mb-4">
+                    <div class="p-3 bg-yellow-100 rounded-full">
+                        <i class="fas fa-rupee-sign text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Revenue</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Total Revenue</span>
+                        <span class="text-2xl font-bold text-gray-900">₹{{ stats.total_revenue }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Revenue This Month</span>
+                        <span class="text-2xl font-bold text-green-600">₹{{ stats.revenue_this_month }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Average Order Value</span>
+                        <span class="text-2xl font-bold text-blue-600">₹{{ stats.avg_order_value }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Conversion Rate</span>
+                        <span class="text-2xl font-bold text-purple-600">{{ stats.conversion_rate }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="mt-8">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Recent Activity</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Recent Orders -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Orders</h3>
+                        <div class="space-y-3">
+                            {% for order in recent_orders %}
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <span class="font-medium text-gray-900">#{{ order.id }}</span>
+                                    <span class="text-sm text-gray-600 ml-2">{{ order.customer.user.get_full_name|default:order.customer.user.username }}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm text-gray-600">{{ order.created_at|date:"M d, Y" }}</span>
+                                    <span class="font-medium text-gray-900 ml-2">₹{{ order.total_amount }}</span>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <p class="text-gray-500 text-center py-4">No recent orders</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Recent Users -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">New Users</h3>
+                        <div class="space-y-3">
+                            {% for user in recent_users %}
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <span class="font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</span>
+                                    <span class="text-sm text-gray-600 ml-2">{{ user.email }}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm text-gray-600">{{ user.date_joined|date:"M d, Y" }}</span>
+                                    {% if user.is_active %}
+                                        <span class="text-green-600 ml-2">Active</span>
+                                    {% else %}
+                                        <span class="text-red-600 ml-2">Inactive</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% empty %}
+                            <p class="text-gray-500 text-center py-4">No new users recently</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .container, .container * {
+        visibility: visible;
+    }
+    
+    .card {
+        break-inside: avoid;
+    }
+    
+    .grid {
+        break-inside: avoid;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+}
+</style>
+{% endblock %}
