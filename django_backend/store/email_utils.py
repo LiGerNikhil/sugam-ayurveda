@@ -145,7 +145,6 @@ def send_verification_email(user):
 <body>
     <div class="container">
         <div class="header">
-            # <img src="{base_url}/static/images/logo.png" alt="Sugam Ayurveda Logo" class="logo" onerror="this.style.display='none'">
             <h1>Sugam Ayurveda</h1>
             <p>Traditional Healing, Modern Care</p>
         </div>
