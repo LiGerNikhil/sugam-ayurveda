@@ -1,0 +1,22 @@
+[Unit]
+Description=gunicorn daemon for Sugam Ayurveda Django Project
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/nkhl/sugam-ayurveda/django_backend
+Environment=DJANGO_SETTINGS_MODULE=sugam_ayurveda.settings
+Environment=PATH=/home/nkhl/sugam-ayurveda/venv/bin
+ExecStart=/home/nkhl/sugam-ayurveda/venv/bin/gunicorn --workers 3 --worker-class sync --bind unix:/run/gunicorn.sock sugam_ayurveda.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
