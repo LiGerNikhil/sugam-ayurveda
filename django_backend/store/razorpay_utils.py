@@ -6,9 +6,9 @@ from decimal import Decimal
 RAZORPAY_KEY_ID = 'rzp_test_SZ7O4UsIzQBDVI'
 RAZORPAY_KEY_SECRET = 'sDXhikw5YhF5eRz5Lvc92PhZ'
 
-print(f"DEBUG: Using hardcoded Razorpay credentials")
-print(f"DEBUG: RAZORPAY_KEY_ID = {RAZORPAY_KEY_ID}")
-print(f"DEBUG: RAZORPAY_KEY_SECRET = {'SET' if RAZORPAY_KEY_SECRET else 'NOT_SET'}")
+# print(f"DEBUG: Using hardcoded Razorpay credentials")
+# print(f"DEBUG: RAZORPAY_KEY_ID = {RAZORPAY_KEY_ID}")
+# print(f"DEBUG: RAZORPAY_KEY_SECRET = {'SET' if RAZORPAY_KEY_SECRET else 'NOT_SET'}")
 
 try:
     client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
