@@ -13,10 +13,11 @@ SECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ceef-103-12-133-93.ngrok-free.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '187.127.147.152']
 # CSRF Trusted Origins for ngrok
 CSRF_TRUSTED_ORIGINS = [
-    'https://ceef-103-12-133-93.ngrok-free.app',
+    'https://ceef-103-12-133-93.ngrok-free.app'
+    "http://187.127.147.152/",
 ]
 # Optional: Set custom site URL
 SITE_URL = 'https://sugamayurvedaa.com'
