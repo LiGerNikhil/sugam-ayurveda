@@ -115,7 +115,7 @@ def user_register(request):
         if user_form.is_valid() and customer_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password'])
-            user.is_active = False  # User will be activated after email verification
+            user.is_active = True  # User is active immediately, no email verification
             user.save()
             
             # Create customer profile
@@ -123,13 +123,9 @@ def user_register(request):
             customer.user = user
             customer.save()
             
-            # Send verification email
-            if send_verification_email(user):
-                messages.success(request, 'Registration successful! A verification email has been sent to your email address. Please verify your account before logging in.')
-            else:
-                messages.error(request, 'Registration successful but failed to send verification email. Please contact support.')
-            
-            return redirect('verification_sent')
+            # Registration complete - redirect to login
+            messages.success(request, 'Registration successful! Please login with your credentials.')
+            return redirect('login')
         else:
             messages.error(request, 'Please correct the errors below.')
     else:

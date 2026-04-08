@@ -27,7 +27,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://www.sugamayurvedaa.com',
     'https://sugamayurvedaa.com',
     'https://www.sugamayurvedaa.com',
-    'https://ceef-103-12-133-93.ngrok-free.app',
+    'https://de32-103-12-133-93.ngrok-free.app',
 ]
 
 # Optional: Set custom site URL
