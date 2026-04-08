@@ -34,14 +34,14 @@ CSRF_TRUSTED_ORIGINS = [
 SITE_URL = 'https://sugamayurvedaa.com'
 
 # Optional: Force HTTPS (set to True after SSL is enabled on VPS)
-USE_HTTPS = True
+USE_HTTPS = False
 
 # If SSL is terminated at Nginx and proxied to Gunicorn over HTTP, enable this.
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Security defaults for VPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# Security defaults for VPS - SET TO FALSE UNTIL SSL IS CONFIGURED
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
