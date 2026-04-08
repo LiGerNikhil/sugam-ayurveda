@@ -13,18 +13,39 @@ SECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '187.127.147.152','sugamayurvedaa.com','www.sugamayurvedaa.com','https://sugamayurvedaa.com']
-# CSRF Trusted Origins for ngrok
-CSRF_TRUSTED_ORIGINS = [
-    'https://ceef-103-12-133-93.ngrok-free.app'
-    "http://187.127.147.152/",
-    'sugamayurvedaa.com','www.sugamayurvedaa.com','https://sugamayurvedaa.com'
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '187.127.147.152',
+    'sugamayurvedaa.com',
+    'www.sugamayurvedaa.com',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://187.127.147.152',
+    'http://sugamayurvedaa.com',
+    'http://www.sugamayurvedaa.com',
+    'https://sugamayurvedaa.com',
+    'https://www.sugamayurvedaa.com',
+    'https://ceef-103-12-133-93.ngrok-free.app',
+]
+
 # Optional: Set custom site URL
 SITE_URL = 'https://sugamayurvedaa.com'
 
-# Optional: Force HTTPS
+# Optional: Force HTTPS (set to True after SSL is enabled on VPS)
 USE_HTTPS = True
+
+# If SSL is terminated at Nginx and proxied to Gunicorn over HTTP, enable this.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Security defaults for VPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -104,7 +125,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'saakshinikhil@gmail.com'
-EMAIL_HOST_PASSWORD = 'kxkx hkrg ojfc byqq'
+EMAIL_HOST_PASSWORD = 'oqqq wqfu fncv jbgt'
 DEFAULT_FROM_EMAIL = 'Sugam Ayurveda <saakshinikhil@gmail.com>'
 
 # Cache settings for OTP

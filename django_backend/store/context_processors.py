@@ -1,4 +1,4 @@
-from .models import SiteInfo
+from .models import SiteInfo, Category
 
 def site_settings(request):
     """
@@ -6,6 +6,7 @@ def site_settings(request):
     """
     try:
         site_info = SiteInfo.objects.first()
+        categories = Category.objects.all().order_by('name')
         if site_info:
             return {
                 'site_info': site_info,
@@ -31,6 +32,7 @@ def site_settings(request):
                 'site_total_customers': site_info.total_customers,
                 'site_total_orders': site_info.total_orders,
                 'site_happy_customers': site_info.happy_customers,
+                'categories': categories,
             }
         else:
             # Return default values if no site info exists
@@ -58,6 +60,7 @@ def site_settings(request):
                 'site_total_customers': 0,
                 'site_total_orders': 0,
                 'site_happy_customers': 0,
+                'categories': categories,
             }
     except:
         # Return default values in case of any error
@@ -85,4 +88,5 @@ def site_settings(request):
             'site_total_customers': 0,
             'site_total_orders': 0,
             'site_happy_customers': 0,
+            'categories': Category.objects.all().order_by('name'),
         }
