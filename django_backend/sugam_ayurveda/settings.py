@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -28,6 +28,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://sugamayurvedaa.com',
     'https://www.sugamayurvedaa.com',
     'https://de32-103-12-133-93.ngrok-free.app',
+    'https://localhost:8000',
+    'https://127.0.0.1:8000',
+    'https://localhost',
+    'https://127.0.0.1',
 ]
 
 # Optional: Set custom site URL
