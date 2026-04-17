@@ -211,7 +211,7 @@ document.getElementById('whatsappForm').addEventListener('submit', function(e) {
     }
     
     // Create WhatsApp message
-    const whatsappMessage = `Hello, I need help with Ayurvedic products.%0A%0AName: ${name}%0APhone: ${phone}%0AMessage: ${message}`;
+    const whatsappMessage = `Product Inquiry - Quick Help\n\nName: ${name}\nPhone: ${phone}\nMessage: ${message}\n\nSource: Sugam Ayurveda Products Page`;
     
     // WhatsApp URL with correct country code (+91 for India)
     const whatsappUrl = `https://wa.me/916391251055?text=${encodeURIComponent(whatsappMessage)}`;
