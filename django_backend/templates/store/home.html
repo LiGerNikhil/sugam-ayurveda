@@ -1,4 +1,5 @@
 {% extends 'store/base.html' %}
+{% load static %}
 
 {% block title %}Home{% endblock %}
 
@@ -2045,14 +2046,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-3 pt-4">
-                        <a href="{% static 'images/mens-health.pdf' %}" 
+                        <!-- <a href="{% static 'images/mens-health.pdf' %}" 
                            download="mens-health-brochure.pdf"
                            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
                             Download Brochure
-                        </a>
+                        </a> -->
                         
                         <a href="https://wa.me/916391251055?text=Hi%20Sugam%20Ayurveda,%20I'm%20interested%20in%20your%20Sexual%20Health%20Solutions.%20Please%20keep%20my%20identity%20confidential." 
                            target="_blank"
@@ -2108,7 +2109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
-<!-- Customer Testimonials Section -->
+<!-- Customer Reviews Section -->
 <section class="py-8 md:py-16 bg-gradient-to-br from-gray-50 to-gray-100">
     <div class="container mx-auto px-4 sm:px-6">
         <div class="text-center mb-8 md:mb-12">
@@ -2117,104 +2118,332 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="text-green-600">Customers Say</span>
             </h2>
             <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
-                Real stories from real people across India who have transformed their lives with our Ayurvedic solutions
+                Real reviews from real customers across India who have experienced our Ayurvedic solutions
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            <!-- Testimonial 1 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                <div class="flex items-center mb-4">
-                    <div class="flex-shrink-0">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" 
-                             alt="Rajesh Kumar" 
-                             class="w-12 h-12 rounded-full object-cover border-2 border-green-200">
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <h3 class="font-semibold text-gray-900">Rajesh Kumar</h3>
-                        <p class="text-sm text-gray-500">Mumbai, Maharashtra</p>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        2 days ago
-                    </div>
-                </div>
+        <!-- Review Submission Form -->
+        <div class="max-w-2xl mx-auto mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 text-center">Share Your Experience</h3>
+                <p class="text-gray-600 text-center mb-6">Help others make informed decisions with your honest feedback</p>
                 
-                <div class="flex items-center mb-3">
-                    <div class="flex text-yellow-400">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.688-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                    </div>
-                    <span class="ml-2 text-sm text-gray-600">5.0</span>
-                </div>
-                
-                <p class="text-gray-700 text-sm leading-relaxed mb-4">
-                    "I was skeptical at first, but after using Sugam Ayurveda's products for 3 months, the results have been remarkable. My energy levels are up and I feel much more confident. The discreet packaging was a huge plus!"
-                </p>
-                
-                <!-- Engagement Section -->
-                <div class="border-t pt-3 mt-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center space-x-4">
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">24</span>
-                            </button>
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                                <span class="text-sm font-medium">8</span>
-                            </button>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="mb-4 p-4 rounded-lg {% if message.tags %}{{ message.tags }}{% endif %}">
+                            {{ message }}
                         </div>
-                        <button class="text-gray-500 hover:text-green-500 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-7.432 0m9.032-4.026A9.001 9.001 0 0112 3c-4.474 0-8.268 3.12-9.032 7.326m0 0A9.001 9.001 0 0012 21c4.474 0 8.268-3.12 9.032-7.326"/>
-                            </svg>
-                        </button>
+                    {% endfor %}
+                {% endif %}
+                
+                <form action="{% url 'submit_review' %}" method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="{{ review_form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ review_form.name.label }}
+                            </label>
+                            {{ review_form.name }}
+                            {% if review_form.name.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in review_form.name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="{{ review_form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ review_form.email.label }}
+                            </label>
+                            {{ review_form.email }}
+                            {% if review_form.email.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in review_form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                     
-                    <!-- Comments Section -->
-                    <div class="space-y-2">
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" 
-                                     alt="Priya" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Priya Sharma</p>
-                                    <p class="text-xs text-gray-600">Which product did you use exactly?</p>
-                                </div>
+                    <div>
+                        <label for="{{ review_form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ review_form.title.label }}
+                        </label>
+                        {{ review_form.title }}
+                        {% if review_form.title.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {% for error in review_form.title.errors %}
+                                    {{ error }}
+                                {% endfor %}
                             </div>
-                        </div>
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/men/67.jpg" 
-                                     alt="Amit" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Amit Patel</p>
-                                    <p class="text-xs text-gray-600">Thanks for sharing! Very helpful review 👍</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="{{ review_form.rating.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ review_form.rating.label }}
+                            </label>
+                            {{ review_form.rating }}
+                            {% if review_form.rating.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in review_form.rating.errors %}
+                                        {{ error }}
+                                    {% endfor %}
                                 </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <label for="{{ review_form.is_anonymous.id_for_label }}" class="flex items-center text-sm font-medium text-gray-700">
+                                {{ review_form.is_anonymous }}
+                                <span class="ml-2">{{ review_form.is_anonymous.label }}</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="{{ review_form.content.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ review_form.content.label }}
+                        </label>
+                        {{ review_form.content }}
+                        {% if review_form.content.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {% for error in review_form.content.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+                            Submit Review
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Display Approved Reviews -->
+        {% if approved_reviews %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {% for review in approved_reviews %}
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300" id="review-{{ review.id }}">
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-gray-900">
+                            {% if review.is_anonymous %}
+                                Anonymous User
+                            {% else %}
+                                {{ review.name }}
+                            {% endif %}
+                        </h3>
+                        <p class="text-sm text-gray-500">{{ review.created_at|date:"M d, Y" }}</p>
+                    </div>
+                    <div class="text-xs text-gray-400">
+                        {{ review.created_at|timesince }} ago
+                    </div>
+                    
+                    <div class="flex items-center mb-3">
+                        <div class="flex text-yellow-400">
+                            {% for i in "12345" %}
+                                {% if forloop.counter0 <= review.rating %}
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                {% else %}
+                                    <svg class="w-5 h-5 text-gray-300" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="ml-2 text-sm text-gray-600">{{ review.rating }}.0</span>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-900 mb-2">{{ review.title }}</h4>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-4">
+                        "{{ review.content }}"
+                    </p>
+                    
+                    <!-- Engagement Section -->
+                    <div class="border-t pt-3 mt-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="likeReview({{ review.id }})" class="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors like-btn" data-review-id="{{ review.id }}">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-sm font-medium like-count-{{ review.id }}">0</span>
+                                </button>
+                                <button onclick="toggleComments({{ review.id }})" class="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                    </svg>
+                                    <span class="text-sm font-medium">0</span>
+                                </button>
+                            </div>
+                            <button class="text-gray-500 hover:text-green-500 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-7.432 0m9.032-4.026A9.001 9.001 0 0112 3c-4.474 0-8.268 3.12-9.032 7.326m0 0A9.001 9.001 0 0012 21c4.474 0 8.268-3.12 9.032-7.326"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Comments Section -->
+                        <div class="comments-section-{{ review.id }} space-y-2">
+                            <!-- Comments will be loaded here -->
+                        </div>
+                        
+                        <!-- Comment Form -->
+                        <div class="comment-form-{{ review.id }} hidden">
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                <form onsubmit="submitComment(event, {{ review.id }})" class="space-y-2">
+                                    <div>
+                                        <input type="text" name="name" placeholder="Your Name (leave blank for anonymous)" maxlength="100" 
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm">
+                                    </div>
+                                    <div>
+                                        <textarea name="content" placeholder="Add a comment..." rows="3" required
+                                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none text-sm"></textarea>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-medium px-4 py-2 rounded-lg transition-colors text-sm">
+                                            Post Comment
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">No Approved Reviews Yet</h3>
+                <p class="text-gray-600 mb-6">Be the first to share your experience with Sugam Ayurveda!</p>
+                                <div class="flex items-center justify-center space-x-2 text-sm text-gray-500">
+                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    <span>Submit your review above to help others</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Review System JavaScript -->
+<script>
+function likeReview(reviewId) {
+    fetch(`/like-review/${reviewId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update like count
+            const likeCount = document.querySelector(`.like-count-${reviewId}`);
+            const likeBtn = document.querySelector(`.like-btn[data-review-id="${reviewId}"]`);
+            
+            likeCount.textContent = data.like_count;
+            likeBtn.classList.add('text-red-500');
+            likeBtn.classList.remove('text-gray-500');
+        } else {
+            alert(data.message || 'Failed to like review');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to like review');
+    });
+}
+
+function toggleComments(reviewId) {
+    const commentsSection = document.querySelector(`.comments-section-${reviewId}`);
+    const commentForm = document.querySelector(`.comment-form-${reviewId}`);
+    
+    if (commentsSection.classList.contains('hidden')) {
+        commentsSection.classList.remove('hidden');
+        commentForm.classList.remove('hidden');
+        
+        // Load comments
+        loadComments(reviewId);
+    } else {
+        commentsSection.classList.add('hidden');
+        commentForm.classList.add('hidden');
+    }
+}
+
+function loadComments(reviewId) {
+    fetch(`/comment-review/${reviewId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const commentsSection = document.querySelector(`.comments-section-${reviewId}`);
+            commentsSection.innerHTML = data.comments_html;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function submitComment(event, reviewId) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    fetch(`/comment-review/${reviewId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            form.reset();
+            loadComments(reviewId);
+        } else {
+            alert('Failed to post comment');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to post comment');
+    });
+}
+
+function getCookie(name) {
+    const value = '; ' + document.cookie;
+    const parts = value.split('; ' + name + '=');
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+</script>    
                 <div class="text-xs text-gray-500 mt-3">
                     <span class="font-medium">Product:</span> Men's Vitality Pack | 
                     <span class="font-medium">Verified Purchase</span>
@@ -2318,447 +2547,61 @@ document.addEventListener('DOMContentLoaded', function() {
                                      class="w-6 h-6 rounded-full object-cover">
                                 <div class="flex-1">
                                     <p class="text-xs font-medium text-gray-700">Anjali Singh</p>
-                                    <p class="text-xs text-gray-600">Thanks for the detailed review! 🙏</p>
+                                    <p class="text-xs text-gray-600">Thanks for sharing your experience!</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="text-xs text-gray-500 mt-3">
-                    <span class="font-medium">Product:</span> Stress Relief Combo | 
-                    <span class="font-medium">Verified Purchase</span>
-                </div>
-            </div>
-
-            <!-- Testimonial 3 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                <div class="flex items-center mb-4">
-                    <div class="flex-shrink-0">
-                        <img src="https://randomuser.me/api/portraits/men/62.jpg" 
-                             alt="Suresh Patil" 
-                             class="w-12 h-12 rounded-full object-cover border-2 border-green-200">
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <h3 class="font-semibold text-gray-900">Suresh Patil</h3>
-                        <p class="text-sm text-gray-500">Pune, Maharashtra</p>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        2 weeks ago
-                    </div>
-                </div>
-                
-                <div class="flex items-center mb-3">
-                    <div class="flex text-yellow-400">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 text-gray-300" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                    </div>
-                    <span class="ml-2 text-sm text-gray-600">4.0</span>
-                </div>
-                
-                <p class="text-gray-700 text-sm leading-relaxed mb-4">
-                    "I tried many allopathic medicines with temporary results. Sugam Ayurveda's approach is completely different - holistic and long-lasting. The products are pure and the guidance from their Ayurvedic experts was invaluable."
-                </p>
-                
-                <!-- Engagement Section -->
-                <div class="border-t pt-3 mt-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center space-x-4">
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">18</span>
-                            </button>
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                                <span class="text-sm font-medium">5</span>
-                            </button>
-                        </div>
-                        <button class="text-gray-500 hover:text-green-500 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-7.432 0m9.032-4.026A9.001 9.001 0 0112 3c-4.474 0-8.268 3.12-9.032 7.326m0 0A9.001 9.001 0 0012 21c4.474 0 8.268-3.12 9.032-7.326"/>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Comments Section -->
-                    <div class="space-y-2">
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/women/33.jpg" 
-                                     alt="Kavita" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Kavita Deshmukh</p>
-                                    <p class="text-xs text-gray-600">How long did it take to see results?</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/men/41.jpg" 
-                                     alt="Mahesh" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Mahesh Joshi</p>
-                                    <p class="text-xs text-gray-600">Good to know about the expert guidance!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-xs text-gray-500 mt-3">
-                    <span class="font-medium">Product:</span> Complete Wellness Package | 
-                    <span class="font-medium">Verified Purchase</span>
-                </div>
-            </div>
-
-            <!-- Testimonial 4 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                <div class="flex items-center mb-4">
-                    <div class="flex-shrink-0">
-                        <img src="https://randomuser.me/api/portraits/men/71.jpg" 
-                             alt="Vikram Gupta" 
-                             class="w-12 h-12 rounded-full object-cover border-2 border-green-200">
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <h3 class="font-semibold text-gray-900">Vikram Gupta</h3>
-                        <p class="text-sm text-gray-500">Bangalore, Karnataka</p>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        3 days ago
-                    </div>
-                </div>
-                
-                <div class="flex items-center mb-3">
-                    <div class="flex text-yellow-400">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                    </div>
-                    <span class="ml-2 text-sm text-gray-600">5.0</span>
-                </div>
-                
-                <p class="text-gray-700 text-sm leading-relaxed mb-4">
-                    "The quality of Sugam Ayurveda's products is outstanding. I can feel the difference in purity compared to other brands. Fast delivery across Bangalore and excellent customer support. Highly recommend for anyone looking for genuine Ayurvedic solutions!"
-                </p>
-                
-                <!-- Engagement Section -->
-                <div class="border-t pt-3 mt-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center space-x-4">
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">42</span>
-                            </button>
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                                <span class="text-sm font-medium">15</span>
-                            </button>
-                        </div>
-                        <button class="text-gray-500 hover:text-green-500 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-7.432 0m9.032-4.026A9.001 9.001 0 0112 3c-4.474 0-8.268 3.12-9.032 7.326m0 0A9.001 9.001 0 0012 21c4.474 0 8.268-3.12 9.032-7.326"/>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Comments Section -->
-                    <div class="space-y-2">
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/women/52.jpg" 
-                                     alt="Divya" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Divya Nair</p>
-                                    <p class="text-xs text-gray-600">Which joint pain product did you use?</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/men/29.jpg" 
-                                     alt="Arjun" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Arjun Reddy</p>
-                                    <p class="text-xs text-gray-600">Good to hear about Bangalore delivery! 🚚</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-xs text-gray-500 mt-3">
-                    <span class="font-medium">Product:</span> Joint Pain Relief | 
-                    <span class="font-medium">Verified Purchase</span>
-                </div>
-            </div>
-
-            <!-- Testimonial 5 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                <div class="flex items-center mb-4">
-                    <div class="flex-shrink-0">
-                        <img src="https://randomuser.me/api/portraits/men/38.jpg" 
-                             alt="Rahul Khanna" 
-                             class="w-12 h-12 rounded-full object-cover border-2 border-green-200">
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <h3 class="font-semibold text-gray-900">Rahul Khanna</h3>
-                        <p class="text-sm text-gray-500">Kolkata, West Bengal</p>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        5 days ago
-                    </div>
-                </div>
-                
-                <div class="flex items-center mb-3">
-                    <div class="flex text-yellow-400">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                    </div>
-                    <span class="ml-2 text-sm text-gray-600">5.0</span>
-                </div>
-                
-                <p class="text-gray-700 text-sm leading-relaxed mb-4">
-                    "After years of trying different treatments, I finally found relief with Sugam Ayurveda. Their personalized approach and genuine care made all the difference. The products are 100% natural and the results speak for themselves. Thank you team!"
-                </p>
-                
-                <!-- Engagement Section -->
-                <div class="border-t pt-3 mt-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center space-x-4">
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">53</span>
-                            </button>
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                                <span class="text-sm font-medium">21</span>
-                            </button>
-                        </div>
-                        <button class="text-gray-500 hover:text-green-500 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-7.432 0m9.032-4.026A9.001 9.001 0 0112 3c-4.474 0-8.268 3.12-9.032 7.326m0 0A9.001 9.001 0 0012 21c4.474 0 8.268-3.12 9.032-7.326"/>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Comments Section -->
-                    <div class="space-y-2">
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/women/47.jpg" 
-                                     alt="Swati" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Swati Banerjee</p>
-                                    <p class="text-xs text-gray-600">How long for diabetes care results?</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/men/56.jpg" 
-                                     alt="Ramesh" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Ramesh Singh</p>
-                                    <p class="text-xs text-gray-600">Inspiring story! Thank you for sharing 💚</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-xs text-gray-500 mt-3">
-                    <span class="font-medium">Product:</span> Diabetes Care Pack | 
-                    <span class="font-medium">Verified Purchase</span>
-                </div>
-            </div>
-
-            <!-- Testimonial 6 -->
-            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                <div class="flex items-center mb-4">
-                    <div class="flex-shrink-0">
-                        <img src="https://randomuser.me/api/portraits/men/83.jpg" 
-                             alt="Naveen Reddy" 
-                             class="w-12 h-12 rounded-full object-cover border-2 border-green-200">
-                    </div>
-                    <div class="ml-4 flex-1">
-                        <h3 class="font-semibold text-gray-900">Naveen Reddy</h3>
-                        <p class="text-sm text-gray-500">Hyderabad, Telangana</p>
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        1 month ago
-                    </div>
-                </div>
-                
-                <div class="flex items-center mb-3">
-                    <div class="flex text-yellow-400">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-5 h-5 text-gray-300" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                    </div>
-                    <span class="ml-2 text-sm text-gray-600">4.0</span>
-                </div>
-                
-                <p class="text-gray-700 text-sm leading-relaxed mb-4">
-                    "Great products and excellent service. The team took time to understand my specific needs and recommended the right treatment. Delivery was on time and the packaging was discreet. Will definitely order again!"
-                </p>
-                
-                <!-- Engagement Section -->
-                <div class="border-t pt-3 mt-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center space-x-4">
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-sm font-medium">27</span>
-                            </button>
-                            <button class="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                                <span class="text-sm font-medium">9</span>
-                            </button>
-                        </div>
-                        <button class="text-gray-500 hover:text-green-500 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-7.432 0m9.032-4.026A9.001 9.001 0 0112 3c-4.474 0-8.268 3.12-9.032 7.326m0 0A9.001 9.001 0 0012 21c4.474 0 8.268-3.12 9.032-7.326"/>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Comments Section -->
-                    <div class="space-y-2">
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/women/71.jpg" 
-                                     alt="Anita" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Anita Sharma</p>
-                                    <p class="text-xs text-gray-600">How was the liver detox experience?</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 rounded-lg p-2">
-                            <div class="flex items-start space-x-2">
-                                <img src="https://randomuser.me/api/portraits/men/48.jpg" 
-                                     alt="Vikas" 
-                                     class="w-6 h-6 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <p class="text-xs font-medium text-gray-700">Vikas Malhotra</p>
-                                    <p class="text-xs text-gray-600">Good service review! Thanks 🙏</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-xs text-gray-500 mt-3">
-                    <span class="font-medium">Product:</span> Liver Detox Kit | 
-                    <span class="font-medium">Verified Purchase</span>
                 </div>
             </div>
         </div>
-
-        <!-- Overall Rating Summary -->
-        <div class="mt-12 text-center">
-            <div class="inline-flex items-center gap-4 bg-white rounded-lg shadow-md px-6 py-4">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-green-600">4.8</div>
-                    <div class="flex text-yellow-400 text-sm">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                    </div>
-                </div>
-                <div class="text-left">
-                    <div class="font-semibold text-gray-900">Based on 10,000+ reviews</div>
-                    <div class="text-sm text-gray-600">From customers across India</div>
-                </div>
-            </div>
+        <div class="text-left">
+            <div class="font-semibold text-gray-900">Based on {{ total_reviews }} review{% if total_reviews != 1 %}s{% endif %}</div>
+            <div class="text-sm text-gray-600">From customers across India</div>
         </div>
     </div>
-</section>
+    
+    <!-- Rating Distribution -->
+    {% if total_reviews > 0 %}
+    <div class="mt-6 max-w-md mx-auto">
+        <div class="flex items-center gap-2 mb-1">
+            <span class="text-sm text-gray-600 w-8">5 stars</span>
+            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                <div class="bg-yellow-400 h-2 rounded-full" style="width: {{ rating_percentages.4 }}%;"></div>
+            </div>
+            <span class="text-sm text-gray-600 w-12 text-right">{{ rating_percentages.4 }}%</span>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+            <span class="text-sm text-gray-600 w-8">4 stars</span>
+            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                <div class="bg-yellow-400 h-2 rounded-full" style="width: {{ rating_percentages.3 }}%;"></div>
+            </div>
+            <span class="text-sm text-gray-600 w-12 text-right">{{ rating_percentages.3 }}%</span>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+            <span class="text-sm text-gray-600 w-8">3 stars</span>
+            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                <div class="bg-yellow-400 h-2 rounded-full" style="width: {{ rating_percentages.2 }}%;"></div>
+            </div>
+            <span class="text-sm text-gray-600 w-12 text-right">{{ rating_percentages.2 }}%</span>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+            <span class="text-sm text-gray-600 w-8">2 stars</span>
+            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                <div class="bg-yellow-400 h-2 rounded-full" style="width: {{ rating_percentages.1 }}%;"></div>
+            </div>
+            <span class="text-sm text-gray-600 w-12 text-right">{{ rating_percentages.1 }}%</span>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+            <span class="text-sm text-gray-600 w-8">1 star</span>
+            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                <div class="bg-yellow-400 h-2 rounded-full" style="width: {{ rating_percentages.0 }}%;"></div>
+            </div>
+            <span class="text-sm text-gray-600 w-12 text-right">{{ rating_percentages.0 }}%</span>
+        </div>
+    </div>
+    {% endif %}
+</div>
 
 <!-- Success Rate -->
 <section class="py-8 md:py-16 bg-white">

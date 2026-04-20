@@ -94,6 +94,65 @@ class Customer(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.user.email}"
 
+class Review(models.Model):
+    RATING_CHOICES = [
+        (5, '5 Stars'),
+        (4, '4 Stars'),
+        (3, '3 Stars'),
+        (2, '2 Stars'),
+        (1, '1 Star'),
+    ]
+    
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    rating = models.IntegerField(choices=RATING_CHOICES, default=5)
+    is_approved = models.BooleanField(default=True)
+    is_anonymous = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Customer Review"
+        verbose_name_plural = "Customer Reviews"
+    
+    def __str__(self):
+        return f"{self.name} - {self.title[:30]}..."
+    
+    def get_average_rating(self):
+        """Calculate average rating for display purposes"""
+        return self.rating
+
+class ReviewLike(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='likes')
+    ip_address = models.GenericIPAddressField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ['review', 'ip_address']
+        verbose_name = "Review Like"
+        verbose_name_plural = "Review Likes"
+    
+    def __str__(self):
+        return f"Like for {self.review.id}"
+
+class ReviewComment(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=100, default='Anonymous')
+    content = models.TextField()
+    ip_address = models.GenericIPAddressField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['created_at']
+        verbose_name = "Review Comment"
+        verbose_name_plural = "Review Comments"
+    
+    def __str__(self):
+        return f"Comment on {self.review.id}"
+
 class Order(models.Model):
     ORDER_STATUS = [
         ('pending', 'Pending'),

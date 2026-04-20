@@ -10,6 +10,11 @@ urlpatterns = [
     path('products/<slug:slug>/', views.product_detail, name='product_detail'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
+    
+    # Review System URLs
+    path('submit-review/', views.submit_review, name='submit_review'),
+    path('like-review/<int:review_id>/', views.like_review, name='like_review'),
+    path('comment-review/<int:review_id>/', views.comment_review, name='comment_review'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
     path('shipping-policy/', views.shipping_policy, name='shipping_policy'),

@@ -1,14 +1,55 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Product, Category, SiteInfo
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
+from .models import Product, Category, SiteInfo, Review, ReviewLike, ReviewComment
+from .forms import ReviewForm, ReviewCommentForm
 
 def home(request):
     site_info = SiteInfo.objects.first()
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)[:8]
+    
+    # Get approved reviews for homepage display
+    approved_reviews = Review.objects.filter(is_approved=True).order_by('-created_at')[:6]
+    
+    # Calculate rating statistics
+    all_reviews = Review.objects.filter(is_approved=True)
+    total_reviews = all_reviews.count()
+    
+    if total_reviews > 0:
+        # Calculate average rating
+        avg_rating = sum(review.rating for review in all_reviews) / total_reviews
+        avg_rating = round(avg_rating, 1)
+        
+        # Calculate rating distribution
+        rating_counts = []
+        rating_percentages = []
+        for i in range(1, 6):
+            count = all_reviews.filter(rating=i).count()
+            percentage = round((count / total_reviews) * 100, 0)
+            rating_counts.append(count)
+            rating_percentages.append(percentage)
+    else:
+        avg_rating = 0.0
+        rating_counts = [0, 0, 0, 0, 0]
+        rating_percentages = [0, 0, 0, 0, 0]
+    
+    # Get review form
+    review_form = ReviewForm()
+    
     return render(request, 'store/home.html', {
         'site_info': site_info,
         'categories': categories,
         'products': products,
+        'approved_reviews': approved_reviews,
+        'review_form': review_form,
+        'total_reviews': total_reviews,
+        'avg_rating': avg_rating,
+        'rating_counts': rating_counts,
+        'rating_percentages': rating_percentages,
     })
 
 def products(request):
@@ -42,11 +83,80 @@ def product_detail(request, slug):
         available=True
     ).exclude(id=product.id)[:4]
     
+    # Get approved reviews for this product
+    reviews = Review.objects.filter(is_approved=True).order_by('-created_at')[:10]
+    
+    # Get review form
+    review_form = ReviewForm()
+    
     return render(request, 'store/product_detail.html', {
         'site_info': site_info,
         'product': product,
         'related_products': related_products,
+        'reviews': reviews,
+        'review_form': review_form,
     })
+
+def submit_review(request):
+    """Handle review submission"""
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.save()
+            messages.success(request, 'Thank you for your review! Your review is now visible on the homepage.')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    
+    return redirect('home')
+
+@require_POST
+def like_review(request, review_id):
+    """Handle review likes"""
+    try:
+        review = Review.objects.get(id=review_id, is_approved=True)
+        ip_address = get_client_ip(request)
+        
+        # Check if already liked
+        if not ReviewLike.objects.filter(review=review, ip_address=ip_address).exists():
+            ReviewLike.objects.create(review=review, ip_address=ip_address)
+            like_count = ReviewLike.objects.filter(review=review).count()
+            return JsonResponse({'success': True, 'like_count': like_count})
+        else:
+            return JsonResponse({'success': False, 'message': 'You have already liked this review'})
+    except Review.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Review not found'})
+
+@require_POST
+def comment_review(request, review_id):
+    """Handle review comments"""
+    try:
+        review = Review.objects.get(id=review_id, is_approved=True)
+        form = ReviewCommentForm(request.POST)
+        
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.review = review
+            comment.ip_address = get_client_ip(request)
+            comment.save()
+            
+            # Return updated comments
+            comments = ReviewComment.objects.filter(review=review).order_by('created_at')
+            comments_html = render_to_string('store/partials/review_comments.html', {'comments': comments})
+            return JsonResponse({'success': True, 'comments_html': comments_html})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    except Review.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Review not found'})
+
+def get_client_ip(request):
+    """Get client IP address"""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 def about(request):
     site_info = SiteInfo.objects.first()
