@@ -9,15 +9,69 @@
 <!-- Product Categories -->
         <div class="py-8 md:py-12">
             <div class="container mx-auto px-4">
-                <div class="mb-6 md:mb-8">
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
-                        Shop by Category
-                    </h2>
+                <div class="mb-6 md:mb-8 relative">
+                    <div class="flex items-center justify-between gap-2 flex-nowrap">
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 whitespace-nowrap">
+                            Shop by Category
+                        </h2>
+                        <button id="browse-all-categories-btn" type="button" aria-haspopup="true" aria-expanded="false" class="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-green-200 bg-white text-green-700 font-semibold text-sm sm:text-base hover:bg-green-50 transition-colors shadow-sm whitespace-nowrap flex-shrink-0">
+                            Show All
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="browse-all-categories-backdrop" class="hidden fixed inset-0 z-[90] bg-black/30"></div>
+                    <div id="browse-all-categories-menu" class="hidden absolute right-0 mt-3 z-[100] w-full md:w-[40rem] lg:w-[52rem] bg-white rounded-2xl shadow-2xl border border-green-100 overflow-hidden">
+                        <div class="p-4 md:p-6">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+                                {% for category in categories %}
+                                    <a href="{% url 'category_detail' category.slug %}" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl hover:bg-green-50 transition-colors">
+                                        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-green-100 bg-green-50 flex items-center justify-center">
+                                            {% if category.image %}
+                                                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif category.image_url %}
+                                                <img src="{{ category.image_url }}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Diabetes' in category.name %}
+                                                <img src="{% static 'images/categories/diabetes.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Liver' in category.name %}
+                                                <img src="{% static 'images/categories/liver.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Gallbladder' in category.name %}
+                                                <img src="{% static 'images/categories/gallbladder.png' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Piles' in category.name or 'Hemorrhoids' in category.name %}
+                                                <img src="{% static 'images/categories/piles.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Joint' in category.name or 'Bone' in category.name %}
+                                                <img src="{% static 'images/categories/joint.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Men' in category.name or 'Sexual' in category.name %}
+                                                <img src="{% static 'images/categories/mens.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Superfood' in category.name or 'Daily' in category.name %}
+                                                <img src="{% static 'images/categories/superfoods.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Cough' in category.name or 'Cold' in category.name or 'Immunity' in category.name %}
+                                                <img src="{% static 'images/categories/cough.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Digestive' in category.name or 'Digestion' in category.name %}
+                                                <img src="{% static 'images/categories/digestion.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% elif 'Sleep' in category.name or 'Stress' in category.name or 'Migraine' in category.name %}
+                                                <img src="{% static 'images/categories/sleep.webp' %}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                            {% else %}
+                                                <div class="w-full h-full flex items-center justify-center bg-green-100">
+                                                    {% autoescape off %}{% category_icon_svg category.name 20 %}{% endautoescape %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="w-full">
+                                            <div class="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-green-700 whitespace-normal break-words leading-snug">{{ category.name }}</div>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Category Slider Container -->
-                <div class="relative overflow-hidden">
-                    <div class="category-carousel flex gap-4 md:gap-6">
+                <div class="relative overflow-hidden" id="category-slider-container">
+                    <div class="category-carousel flex gap-4 md:gap-6" id="category-carousel">
                         {% for category in categories %}
                             <div class="flex-none w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48">
                                 <a href="{% url 'products' %}?category={{ category.name }}" 
@@ -980,22 +1034,183 @@
         
         <style>
         .category-carousel {
-            animation: slideCategories 25s linear infinite;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: pan-y;
         }
-        
-        @keyframes slideCategories {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
+
+        .category-carousel:active {
+            cursor: grabbing;
         }
-        
+
+        .category-carousel.swiping {
+            transition: none;
+        }
+
         .category-carousel:hover {
             animation-play-state: paused;
         }
         </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.getElementById('category-carousel');
+        const container = document.getElementById('category-slider-container');
+        if (!carousel || !container) return;
+
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
+        let previousTranslate = 0;
+        let animationId = null;
+        let isAutoScrolling = true;
+        let autoScrollTimeout;
+        let carouselWidth = carousel.scrollWidth;
+        let scrollSpeed = 0.5; // pixels per frame
+
+        // Auto-scroll function using requestAnimationFrame
+        function autoScroll() {
+            if (!isAutoScrolling || isDragging) return;
+
+            currentTranslate -= scrollSpeed;
+
+            // Reset to create infinite loop
+            const halfWidth = carouselWidth / 2;
+            if (Math.abs(currentTranslate) >= halfWidth) {
+                currentTranslate = 0;
+            }
+
+            carousel.style.transform = `translateX(${currentTranslate}px)`;
+            animationId = requestAnimationFrame(autoScroll);
+        }
+
+        // Start auto-scroll
+        function startAutoScroll() {
+            if (animationId) cancelAnimationFrame(animationId);
+            isAutoScrolling = true;
+            carousel.style.transition = 'none';
+            animationId = requestAnimationFrame(autoScroll);
+        }
+
+        // Stop auto-scroll
+        function stopAutoScroll() {
+            isAutoScrolling = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+
+        // Get current transform value
+        function getCurrentTranslate() {
+            const style = window.getComputedStyle(carousel);
+            const matrix = style.transform || style.webkitTransform || style.mozTransform;
+            if (matrix === 'none' || !matrix) return 0;
+            const values = matrix.split('(')[1].split(')')[0].split(',');
+            return parseFloat(values[4] || values[3]);
+        }
+
+        // Touch start
+        function touchStart(clientX) {
+            isDragging = true;
+            startX = clientX;
+            previousTranslate = getCurrentTranslate();
+            currentTranslate = previousTranslate;
+            carousel.classList.add('swiping');
+            stopAutoScroll();
+            clearTimeout(autoScrollTimeout);
+        }
+
+        // Touch move
+        function touchMove(clientX) {
+            if (!isDragging) return;
+            const currentX = clientX;
+            const diff = currentX - startX;
+            currentTranslate = previousTranslate + diff;
+            carousel.style.transform = `translateX(${currentTranslate}px)`;
+        }
+
+        // Touch end
+        function touchEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            carousel.classList.remove('swiping');
+
+            // Calculate swipe direction and distance
+            const diff = currentTranslate - previousTranslate;
+            const swipeThreshold = 50;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                // User swiped, continue auto-scrolling from current position
+                carousel.style.transition = 'transform 0.3s ease-out';
+                carousel.style.transform = `translateX(${currentTranslate}px)`;
+
+                // Resume auto-scroll after short delay
+                autoScrollTimeout = setTimeout(() => {
+                    carousel.style.transition = 'none';
+                    startAutoScroll();
+                }, 500);
+            } else {
+                // Snap back slightly and resume animation
+                carousel.style.transition = 'transform 0.3s ease-out';
+                carousel.style.transform = `translateX(${currentTranslate}px)`;
+                setTimeout(() => {
+                    carousel.style.transition = 'none';
+                    startAutoScroll();
+                }, 300);
+            }
+        }
+
+        // Touch events
+        carousel.addEventListener('touchstart', (e) => {
+            touchStart(e.touches[0].clientX);
+        }, { passive: true });
+
+        carousel.addEventListener('touchmove', (e) => {
+            touchMove(e.touches[0].clientX);
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', touchEnd, { passive: true });
+
+        // Mouse events for desktop drag
+        carousel.addEventListener('mousedown', (e) => {
+            touchStart(e.clientX);
+            e.preventDefault();
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            touchMove(e.clientX);
+        });
+
+        carousel.addEventListener('mouseup', touchEnd);
+        carousel.addEventListener('mouseleave', () => {
+            if (isDragging) touchEnd();
+        });
+
+        // Pause on hover
+        carousel.addEventListener('mouseenter', () => {
+            stopAutoScroll();
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            if (!isDragging) {
+                startAutoScroll();
+            }
+        });
+
+        // Prevent click on links while dragging
+        carousel.addEventListener('click', (e) => {
+            if (Math.abs(currentTranslate - previousTranslate) > 10) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        // Start auto-scroll initially
+        startAutoScroll();
+    });
+</script>
 
 <!-- Hero Section - Slideshow -->
 <section class="py-2 md:py-4 bg-gray-50">
@@ -1149,44 +1364,44 @@
             </div>
             
             <!-- Content Section -->
-            <div class="w-full lg:w-1/2 text-center lg:text-left">
+            <div class="w-full lg:w-1/2">
                 <div class="space-y-6">
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight text-center md:text-left">
                         India's No.1 Ayurvedic Treatment
                         <span class="text-green-600">for Kidney Stones</span>
                     </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
+                    <div class="space-y-4 md:space-y-6 max-w-md mx-auto md:max-w-none md:mx-0">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">GMP Certified</h3>
                                 <p class="text-gray-600 text-sm md:text-base">All products manufactured in GMP certified facilities with strict quality control</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">100% Natural Ingredients</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Pure Ayurvedic herbs with no side effects or chemicals</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Proven Results</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Thousands of satisfied customers with successful kidney stone treatment</p>
                             </div>
@@ -1194,7 +1409,7 @@
                     </div>
                     
                     <!-- CTA Button -->
-                    <div class="pt-6">
+                    <div class="pt-6 text-center md:text-left">
                         <a href="{% url 'products' %}" 
                            class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1214,44 +1429,44 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <!-- Content Section -->
-            <div class="order-2 lg:order-1 text-center lg:text-left">
+            <div class="order-2 lg:order-1">
                 <div class="space-y-6">
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight text-center md:text-left">
                         Proven Bundles for
                         <span class="text-green-600">Your Health Concerns</span>
                     </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
+                    <div class="space-y-4 md:space-y-6 max-w-md mx-auto md:max-w-none md:mx-0">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2zm-7 4a2 2 0 11-4 0v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Complete Treatment Plans</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Curated bundles for specific health conditions with synergistic effects</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .438-3 2.062 0 1.41.563 1.872 3 3.872 0 2.412-.438 3-2.062 0-1.41-.563-1.872-3-3.872z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Cost Effective</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Save up to 30% compared to buying individual products</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v5.586a1 1 0 00-.707.293l-5.414 5.414a1 1 0 00-.293.707L5.586 16H4a1 1 0 00-1 1v-1a1 1 0 00-1-1h1.586l4.707-4.707C10.923 10.149 11 10.586V16a1 1 0 001 1h1a1 1 0 001-1v-5.586z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Expert Recommended</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Formulated by Ayurvedic experts for maximum effectiveness</p>
                             </div>
@@ -1259,7 +1474,7 @@
                     </div>
                     
                     <!-- CTA Button -->
-                    <div class="pt-6">
+                    <div class="pt-6 text-center md:text-left">
                         <a href="{% url 'products' %}" 
                            class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1288,44 +1503,44 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <!-- Content Section -->
-            <div class="text-center lg:text-left">
+            <div class="">
                 <div class="space-y-6">
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight text-center md:text-left">
                         KidneyClean
                         <span class="text-green-600">Capsule</span>
                     </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
+                    <div class="space-y-4 md:space-y-6 max-w-md mx-auto md:max-w-none md:mx-0">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Natural Stone Dissolution</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Breaks down kidney stones naturally without surgery</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Fast Relief</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Quick pain relief and improved kidney function</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">100% Safe</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Ayurvedic formula with no side effects</p>
                             </div>
@@ -1333,7 +1548,7 @@
                     </div>
                     
                     <!-- CTA Button -->
-                    <div class="pt-6">
+                    <div class="pt-6 text-center md:text-left">
                         <a href="{% url 'products' %}" 
                            class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1389,44 +1604,44 @@
             </div>
             
             <!-- Content Section -->
-            <div class="w-full lg:w-1/2 text-center lg:text-left">
+            <div class="w-full lg:w-1/2">
                 <div class="space-y-6">
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight text-center md:text-left">
                         Wild-Harvested Purity:
                         <span class="text-green-600">Right to Your Doorstep</span>
                     </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
+                    <div class="space-y-4 md:space-y-6 max-w-md mx-auto md:max-w-none md:mx-0">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 0l4-4m5 4v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Qualified Ayurvedic Doctors</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Get personalized advice from certified Ayurvedic practitioners</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Free Consultation</h3>
                                 <p class="text-gray-600 text-sm md:text-base">No consultation charges for first-time customers</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Personalized Treatment</h3>
                                 <p class="text-gray-600 text-sm md:text-base">Customized health plans based on your specific needs</p>
                             </div>
@@ -1434,7 +1649,7 @@
                     </div>
                     
                     <!-- CTA Button -->
-                    <div class="pt-6">
+                    <div class="pt-6 text-center md:text-left">
                         <a href="{% url 'contact' %}" 
                            class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-sm md:text-base">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1875,65 +2090,64 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
-<!-- Sexual Health Section -->
 <section class="py-8 md:py-16 bg-gradient-to-br from-green-50 to-emerald-50">
     <div class="container mx-auto px-4 sm:px-6">
         <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
             <!-- Content Section -->
-            <div class="w-full lg:w-1/2 text-center lg:text-left">
+            <div class="w-full lg:w-1/2">
                 <div class="space-y-6">
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight text-center md:text-left">
                         Sexual Health
                         <span class="text-green-600">Solutions</span>
                     </h2>
-                    <p class="text-gray-600 text-sm md:text-base leading-relaxed">
+                    <p class="text-gray-600 text-sm md:text-base leading-relaxed text-center md:text-left">
                         Experience renewed vitality and confidence with our premium Ayurvedic formulations. Our sexual wellness products combine centuries-old traditional wisdom with modern scientific research to address intimate health concerns naturally, safely, and effectively. Each formulation is carefully crafted by Ayurvedic experts to restore balance, enhance performance, and improve overall quality of life.
                     </p>
                     
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-3">
+                    <div class="space-y-4 md:space-y-6 max-w-md mx-auto md:max-w-none md:mx-0">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="font-semibold text-gray-900 mb-1 text-sm md:text-base">100% Natural Ingredients</h3>
                                 <p class="text-gray-600 text-xs md:text-sm">Pure herbal extracts like Ashwagandha, Shilajit, and Safed Musli with no harmful side effects</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-start gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="font-semibold text-gray-900 mb-1 text-sm md:text-base">Clinically Tested</h3>
                                 <p class="text-gray-600 text-xs md:text-sm">Proven results with scientific validation and 10,000+ satisfied customers nationwide</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-start gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="font-semibold text-gray-900 mb-1 text-sm md:text-base">Safe & Confidential</h3>
                                 <p class="text-gray-600 text-xs md:text-sm">Discreet packaging, secure ordering, and complete privacy protection</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-3">
+                        <div class="flex items-start gap-4 text-center md:text-left">
                             <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                                 </svg>
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <h3 class="font-semibold text-gray-900 mb-1 text-sm md:text-base">Expert Ayurvedic Guidance</h3>
                                 <p class="text-gray-600 text-xs md:text-sm">Personalized consultations with certified Ayurvedic practitioners</p>
                             </div>
@@ -1941,7 +2155,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                    <div class="flex flex-col sm:flex-row gap-3 pt-4 text-center md:text-left">
                         <!-- <a href="{% static 'images/mens-health.pdf' %}" 
                            download="mens-health-brochure.pdf"
                            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg">
@@ -2505,42 +2719,42 @@ function getCookie(name) {
         <!-- Content Section -->
         <div class="text-center lg:text-center mb-8 md:mb-12">
             <div class="space-y-6">
-                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight text-center md:text-left">
                     High Success
                     <span class="text-green-600">Rate</span>
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-                    <div class="flex items-center gap-3">
+                <div class="space-y-4 md:space-y-6 max-w-md mx-auto md:max-w-none md:mx-0">
+                    <div class="flex items-start gap-4 text-center md:text-left">
                         <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Proven Results</h3>
                             <p class="text-gray-600 text-sm md:text-base">Over 10,000 successful treatments with positive health outcomes</p>
                         </div>
                     </div>
                     
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-start gap-4 text-center md:text-left">
                         <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 7h7a4 4 0 00-4 4v10a2 2 0 002 2H6a2 2 0 01-2-2V7a2 2 0 00-2-2z"></path>
                             </svg>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Expert Formulations</h3>
                             <p class="text-gray-600 text-sm md:text-base">Scientifically developed Ayurvedic formulas with traditional herbs</p>
                         </div>
                     </div>
                     
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-start gap-4 text-center md:text-left">
                         <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m6-6a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Safe & Effective</h3>
                             <p class="text-gray-600 text-sm md:text-base">No side effects, GMP certified, and clinically tested</p>
                         </div>
@@ -2548,7 +2762,7 @@ function getCookie(name) {
                 </div>
                 
                 <!-- CTA Button -->
-                <div class="pt-6">
+                <div class="pt-6 text-center md:text-left">
                     <!-- <a href="{% url 'products' %}" 
                        class="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-sm md:text-base">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2809,6 +3023,39 @@ function toggleFAQ(button) {
         </div>
     </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('browse-all-categories-btn');
+    const menu = document.getElementById('browse-all-categories-menu');
+    const backdrop = document.getElementById('browse-all-categories-backdrop');
+    if (!btn || !menu || !backdrop) return;
+
+    const closeMenu = () => {
+        menu.classList.add('hidden');
+        backdrop.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+    };
+
+    const openMenu = () => {
+        menu.classList.remove('hidden');
+        backdrop.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+    };
+
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (menu.classList.contains('hidden')) openMenu();
+        else closeMenu();
+    });
+
+    backdrop.addEventListener('click', closeMenu);
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeMenu();
+    });
+});
+</script>
+
 {% endblock %}
 
 <!-- JavaScript for Product Slider -->
@@ -2944,4 +3191,5 @@ function showNotification(message, type = 'info') {
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
+
 </script>

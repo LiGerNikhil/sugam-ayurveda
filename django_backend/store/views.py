@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
+from django.urls import reverse
+from urllib.parse import urlencode
 from .models import Product, Category, SiteInfo, Review, ReviewLike, ReviewComment
 from .forms import ReviewForm, ReviewCommentForm
 
@@ -74,6 +76,12 @@ def products(request):
         'category_filter': category_filter,
         'search_query': search_query,
     })
+
+def category_detail(request, slug):
+    category = get_object_or_404(Category, id=slug)
+    url = reverse('products')
+    query = urlencode({'category': category.name})
+    return redirect(f'{url}?{query}')
 
 def product_detail(request, slug):
     site_info = SiteInfo.objects.first()

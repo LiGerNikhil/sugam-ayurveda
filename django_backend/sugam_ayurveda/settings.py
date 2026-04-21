@@ -19,6 +19,7 @@ ALLOWED_HOSTS = [
     '187.127.147.152',
     'sugamayurvedaa.com',
     'www.sugamayurvedaa.com',
+    'bfbe-2401-4900-8846-1076-a402-cbe9-975f-856.ngrok-free.app'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -27,7 +28,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://www.sugamayurvedaa.com',
     'https://sugamayurvedaa.com',
     'https://www.sugamayurvedaa.com',
-    'https://de32-103-12-133-93.ngrok-free.app',
+    'https://bfbe-2401-4900-8846-1076-a402-cbe9-975f-856.ngrok-free.app',
     'https://localhost:8000',
     'https://127.0.0.1:8000',
     'https://localhost',

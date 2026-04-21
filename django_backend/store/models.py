@@ -13,6 +13,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def slug(self):
+        return self.id
+
 class Product(models.Model):
     PRODUCT_TYPES = [
         ('single', 'Single'),
