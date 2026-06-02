@@ -435,8 +435,8 @@
 
           <!-- User Actions -->
           <div class="flex items-center gap-2 lg:gap-4">
-            {% if user.is_authenticated %} {% if user.is_staff or
-            user.is_superuser %}
+            {% if user.is_authenticated %}
+              {% if user.is_staff or user.is_superuser %}
             <a
               href="{% url 'admin_dashboard' %}"
               class="hidden sm:flex items-center gap-2 text-gray-800 hover:text-gray-900 font-medium transition-colors"
@@ -567,8 +567,8 @@
               <i class="fas fa-envelope mr-3 w-4"></i>Contact
             </a>
 
-            {% if user.is_authenticated %} {% if user.is_staff or
-            user.is_superuser %}
+            {% if user.is_authenticated %}
+              {% if user.is_staff or user.is_superuser %}
             <a
               href="{% url 'admin_dashboard' %}"
               class="block px-4 py-2 text-gray-800 hover:text-gray-900 hover:bg-gray-100 transition-colors"
