@@ -9,9 +9,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
-SECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-your-secret-key-here-change-in-production')
 
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_PRODUCTION', 'false').lower() != 'true'
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -162,8 +162,11 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'admin_dashboard'
 LOGOUT_REDIRECT_URL = 'login'
 
-# Whitenoise for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Static files storage: use simple storage in dev, manifest+compression in prod
+if DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Razorpay Payment Gateway Settings
 RAZORPAY_KEY_ID = 'rzp_test_SZ7O4UsIzQBDVI'
